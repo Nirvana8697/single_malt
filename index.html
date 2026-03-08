@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>single malt — Nirvana on anything and everything</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inconsolata:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:         #1a1208;
+    --parchment:   #f5efe4;
+    --warm-mid:    #ede3d2;
+    --amber:       #b5732a;
+    --amber-light: #d4924a;
+    --muted:       #8a7a65;
+    --rule:        #c9b99a;
+    --cream:       #faf6ef;
+
+    /* Section accents — all warm, parchment-adjacent */
+    --c-nooks:   #b5732a; /* amber         — Nooks & Crannies     */
+    --c-route:   #a05a3a; /* terracotta    — En Route             */
+    --c-dismal:  #6a6a9a; /* dusty indigo  — Dismal & the Divine  */
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* grain texture */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 999; opacity: .45;
+  }
+
+  /* scroll progress */
+  #bar {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: linear-gradient(90deg, var(--amber), var(--amber-light));
+    z-index: 1000; width: 0; transition: width .08s linear;
+  }
+
+  /* ══ HEADER ══ */
+  header {
+    background: var(--cream);
+    border-bottom: 1px solid var(--rule);
+    padding: 0 clamp(1.5rem,6vw,5rem);
+  }
+
+  .mast {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: end;
+    gap: 1rem;
+    padding: 2.2rem 0 1.6rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .mast-left { display: flex; flex-direction: column; gap: .45rem; }
+  .mast-vol {
+    font-family: 'Inconsolata', monospace;
+    font-size: .6rem; letter-spacing: .25em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .mast-desc {
+    font-style: italic; font-size: .92rem;
+    color: var(--muted); max-width: 240px; line-height: 1.5;
+  }
+
+  .mast-center { text-align: center; }
+  .site-name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(3rem,7vw,6.5rem);
+    font-weight: 900; letter-spacing: -.02em; line-height: 1;
+    color: var(--ink); text-decoration: none; display: block;
+  }
+  .site-name em { font-style: normal; color: var(--amber); }
+
+  .mast-right { display: flex; justify-content: flex-end; align-items: flex-end; padding-bottom: .2rem; }
+  .mast-date {
+    font-family: 'Inconsolata', monospace;
+    font-size: .6rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--muted); text-align: right; line-height: 1.9;
+  }
+
+  /* ── SECTION NAV ── */
+  .section-nav { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+  .sni {
+    display: flex; flex-direction: column; align-items: center; gap: .3rem;
+    padding: 1rem 1rem 1.1rem;
+    text-decoration: none;
+    border-right: 1px solid var(--rule);
+    position: relative; overflow: hidden;
+    transition: background .2s;
+  }
+  .sni:last-child { border-right: none; }
+  .sni:hover { background: var(--warm-mid); }
+  .sni::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px; transform: scaleX(0); transform-origin: center;
+    transition: transform .3s ease;
+  }
+  .sni:hover::after { transform: scaleX(1); }
+  .sni-n::after { background: var(--c-nooks);  }
+  .sni-r::after { background: var(--c-route);  }
+  .sni-d::after { background: var(--c-dismal); }
+
+  .sni-label {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(.88rem,1.5vw,1.15rem); font-weight: 700;
+    transition: color .2s;
+  }
+  .sni-n .sni-label { color: var(--c-nooks);  }
+  .sni-r .sni-label { color: var(--c-route);  }
+  .sni-d .sni-label { color: var(--c-dismal); }
+
+  .sni-sub {
+    font-family: 'Inconsolata', monospace;
+    font-size: .57rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ══ PAGE ══ */
+  .page {
+    max-width: 1260px; margin: 0 auto;
+    padding: clamp(2rem,5vw,4rem) clamp(1.5rem,5vw,4rem);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    display: grid; grid-template-columns: 1fr 1fr;
+    border: 1px solid var(--rule); overflow: hidden;
+    margin-bottom: 4rem;
+    opacity: 0; transform: translateY(22px);
+    animation: up .9s ease .1s forwards;
+  }
+  .hero-img { position: relative; overflow: hidden; min-height: 460px; }
+  .hero-img img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    filter: sepia(25%) contrast(1.05);
+    transition: transform .7s ease, filter .4s;
+  }
+  .hero:hover .hero-img img {
+    transform: scale(1.04); filter: sepia(10%) contrast(1.08);
+  }
+  .hero-img::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent 60%, var(--cream) 100%);
+  }
+  .hero-body {
+    padding: 3.5rem 3rem 3rem 2.5rem;
+    display: flex; flex-direction: column; justify-content: center;
+    background: var(--cream);
+  }
+  .hero-cat {
+    display: inline-flex; align-items: center; gap: .55rem;
+    font-family: 'Inconsolata', monospace;
+    font-size: .62rem; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--c-nooks); margin-bottom: 1.1rem;
+  }
+  .hero-cat::before { content: ''; width: 22px; height: 1px; background: var(--c-nooks); }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem,3.2vw,3rem); font-weight: 700;
+    line-height: 1.12; color: var(--ink); margin-bottom: 1.2rem;
+  }
+  .hero-title a { text-decoration: none; color: inherit; transition: color .2s; }
+  .hero-title a:hover { color: var(--amber); }
+
+  .hero-rule { width: 36px; height: 1px; background: var(--rule); margin-bottom: 1.2rem; }
+
+  .hero-excerpt {
+    font-size: 1.02rem; font-weight: 300; font-style: italic;
+    color: #5a4a35; line-height: 1.82;
+    border-left: 2px solid var(--amber-light);
+    padding-left: 1.1rem; margin-bottom: 2rem;
+  }
+  .hero-meta {
+    font-family: 'Inconsolata', monospace;
+    font-size: .65rem; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 1.8rem;
+  }
+  .hero-meta span + span::before { content: ' · '; }
+
+  .read-more {
+    display: inline-flex; align-items: center; gap: .6rem;
+    font-family: 'Inconsolata', monospace;
+    font-size: .68rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--ink); text-decoration: none;
+    border-bottom: 1px solid var(--ink); padding-bottom: 2px;
+    width: fit-content; transition: color .2s, border-color .2s;
+  }
+  .read-more:hover { color: var(--amber); border-color: var(--amber); }
+  .read-more svg { transition: transform .2s; }
+  .read-more:hover svg { transform: translateX(4px); }
+
+  /* ── ORNAMENT ── */
+  .ornament {
+    display: flex; align-items: center; gap: 1.2rem;
+    margin: 0 0 2.5rem;
+    opacity: 0; animation: up .6s ease .4s forwards;
+  }
+  .ornament::before, .ornament::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+  .ornament-gems { color: var(--amber); font-size: .5rem; letter-spacing: .4em; }
+
+  /* ── SHELVES ── */
+  .shelves {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    border: 1px solid var(--rule); margin-bottom: 4rem;
+    background: var(--parchment);
+    opacity: 0; animation: up .7s ease .5s forwards;
+  }
+  .shelf {
+    padding: 2.2rem 1.8rem 2.5rem;
+    border-right: 1px solid var(--rule);
+    position: relative;
+  }
+  .shelf:last-child { border-right: none; }
+  .shelf::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .shelf-n::before { background: linear-gradient(90deg, var(--c-nooks),  transparent 80%); }
+  .shelf-r::before { background: linear-gradient(90deg, var(--c-route),  transparent 80%); }
+  .shelf-d::before { background: linear-gradient(90deg, var(--c-dismal), transparent 80%); }
+
+  .shelf-head {
+    padding-bottom: 1.2rem; border-bottom: 1px solid var(--rule); margin-bottom: 1.6rem;
+  }
+  .shelf-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem; font-weight: 700; line-height: 1.2; margin-bottom: .2rem;
+  }
+  .shelf-n .shelf-name { color: var(--c-nooks);  }
+  .shelf-r .shelf-name { color: var(--c-route);  }
+  .shelf-d .shelf-name { color: var(--c-dismal); }
+
+  .shelf-theme {
+    font-family: 'Inconsolata', monospace;
+    font-size: .57rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
+  }
+
+  .shelf-post { display: flex; flex-direction: column; gap: .5rem; }
+  .shelf-post-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; font-weight: 700; line-height: 1.3;
+    color: var(--ink); text-decoration: none; transition: color .2s;
+  }
+  .shelf-post-title:hover { color: var(--amber); }
+  .shelf-post-snip {
+    font-size: .85rem; font-style: italic; color: var(--muted); line-height: 1.6;
+  }
+  .shelf-post-meta {
+    font-family: 'Inconsolata', monospace;
+    font-size: .57rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--rule); margin-top: .3rem;
+  }
+
+  .shelf-empty { display: flex; flex-direction: column; gap: .7rem; padding: .5rem 0; }
+  .shelf-empty-glyph {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem; line-height: 1; opacity: .15; color: var(--ink);
+  }
+  .shelf-empty-text {
+    font-style: italic; font-size: .88rem; color: var(--muted); line-height: 1.65;
+  }
+
+  /* ── ABOUT ── */
+  .about {
+    border: 1px solid var(--rule);
+    background: var(--parchment);
+    padding: 3rem 3.5rem;
+    display: grid; grid-template-columns: auto 1fr;
+    align-items: center; gap: 3rem;
+    margin-bottom: 4rem;
+    opacity: 0; animation: up .7s ease .65s forwards;
+  }
+  .about-mono {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem; font-weight: 900; font-style: italic;
+    color: var(--amber); line-height: 1; opacity: .25; user-select: none;
+  }
+  .about-quote {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: clamp(1rem,1.8vw,1.35rem);
+    color: #5a4a35; line-height: 1.7; margin-bottom: .7rem;
+  }
+  .about-attr {
+    font-family: 'Inconsolata', monospace;
+    font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--rule);
+    background: var(--parchment);
+    padding: 2.5rem clamp(1.5rem,5vw,4rem);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-weight: 900;
+    color: var(--ink); text-decoration: none;
+  }
+  .footer-brand span { color: var(--amber); }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a {
+    font-family: 'Inconsolata', monospace;
+    font-size: .6rem; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none; transition: color .2s;
+  }
+  .footer-links a:hover { color: var(--amber); }
+  .footer-copy {
+    font-family: 'Inconsolata', monospace;
+    font-size: .57rem; letter-spacing: .12em; color: var(--muted); text-transform: uppercase;
+  }
+
+  /* ── ANIM ── */
+  @keyframes up { to { opacity: 1; transform: translateY(0); } }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 920px) {
+    .mast { grid-template-columns: 1fr; text-align: center; gap: .8rem; }
+    .mast-left { align-items: center; }
+    .mast-desc { max-width: 100%; }
+    .mast-right { justify-content: center; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-img { min-height: 260px; }
+    .hero-img::after { background: linear-gradient(180deg, transparent 55%, var(--cream) 100%); }
+    .hero-body { padding: 2rem 1.5rem; }
+    .shelves { grid-template-columns: 1fr; }
+    .shelf { border-right: none; border-bottom: 1px solid var(--rule); }
+    .shelf:last-child { border-bottom: none; }
+    .about { grid-template-columns: 1fr; padding: 2rem; }
+    .about-mono { display: none; }
+    footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<div id="bar"></div>
+
+<header>
+  <div class="mast">
+    <div class="mast-left">
+      <span class="mast-vol">Vol. I &nbsp;·&nbsp; Est. 2018</span>
+      <p class="mast-desc">Nirvana on anything and everything that comes across…</p>
+    </div>
+    <div class="mast-center">
+      <a class="site-name" href="#">single&nbsp;<em>malt</em></a>
+    </div>
+    <div class="mast-right">
+      <div class="mast-date">Kolkata &amp; Elsewhere<br>A Journal of Ideas</div>
+    </div>
+  </div>
+
+  <nav class="section-nav">
+    <a class="sni sni-n" href="#nooks">
+      <span class="sni-label">Nooks &amp; Crannies</span>
+      <span class="sni-sub">Reflections</span>
+    </a>
+    <a class="sni sni-r" href="#en-route">
+      <span class="sni-label">En Route</span>
+      <span class="sni-sub">Travelogue</span>
+    </a>
+    <a class="sni sni-d" href="#dismal">
+      <span class="sni-label">The Dismal &amp; the Divine</span>
+      <span class="sni-sub">Economics</span>
+    </a>
+  </nav>
+</header>
+
+<main class="page">
+
+  <article class="hero" id="nooks">
+    <div class="hero-img">
+      <img src="kolkata-tram.jpg"
+           alt="A Kolkata tram"
+           onerror="this.style.background='#c9b99a';this.removeAttribute('src')">
+    </div>
+    <div class="hero-body">
+      <div class="hero-cat">Nooks &amp; Crannies</div>
+      <h1 class="hero-title">
+        <a href="en-route-to-bohemia.html">
+          En Route to Bohemia
+        </a>
+      </h1>
+      <div class="hero-rule"></div>
+      <p class="hero-excerpt">
+        The melancholy of leaving Kolkata, the impossibility of nostalgia, 
+        and a city that never melts into a pot — but lays a table with an 
+        Indian thali of infinite, irreducible richness.
+      </p>
+      <p class="hero-meta">
+        <span>January 24, 2018</span>
+        <span>Memoir</span>
+        <span>5 min read</span>
+      </p>
+      <a class="read-more" href="en-route-to-bohemia.html">
+        Read Essay
+        <svg width="14" height="10" viewBox="0 0 14 10" fill="none"
+             stroke="currentColor" stroke-width="1.5">
+          <path d="M1 5h12M8 1l4 4-4 4"/>
+        </svg>
+      </a>
+    </div>
+  </article>
+
+  <div class="ornament">
+    <div class="ornament-gems">◆ &nbsp; ◆ &nbsp; ◆</div>
+  </div>
+
+  <div class="shelves">
+    <section class="shelf shelf-n">
+      <div class="shelf-head">
+        <div class="shelf-name">Nooks &amp; Crannies</div>
+        <div class="shelf-theme">Reflections</div>
+      </div>
+      <div class="shelf-post">
+        <a class="shelf-post-title" href="en-route-to-bohemia.html">
+          En Route to Bohemia
+        </a>
+        <p class="shelf-post-snip">
+          On leaving Kolkata — and the impossibility of truly leaving any city that has formed you.
+        </p>
+        <div class="shelf-post-meta">Jan 2018</div>
+      </div>
+    </section>
+
+    <section class="shelf shelf-r" id="en-route">
+      <div class="shelf-head">
+        <div class="shelf-name">En Route</div>
+        <div class="shelf-theme">Travelogue</div>
+      </div>
+      <div class="shelf-empty">
+        <div class="shelf-empty-glyph">✈</div>
+        <p class="shelf-empty-text">
+          Dispatches from elsewhere.<br>First entry is on its way.
+        </p>
+      </div>
+    </section>
+
+    <section class="shelf shelf-d" id="dismal">
+      <div class="shelf-head">
+        <div class="shelf-name">The Dismal &amp; the Divine</div>
+        <div class="shelf-theme">Economics</div>
+      </div>
+      <div class="shelf-empty">
+        <div class="shelf-empty-glyph">∫</div>
+        <p class="shelf-empty-text">
+          Where the invisible hand meets the human condition.<br>First entry is on its way.
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <div class="about">
+    <div>
+      <p class="about-quote">
+        "A record of wanderings — through cities, ideas, and half-remembered 
+        conversations over a good glass of single malt."
+      </p>
+      <p class="about-attr">Nirvana &nbsp;·&nbsp; Economist &nbsp;·&nbsp; Traveller &nbsp;·&nbsp; Occasional Writer</p>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <a class="footer-brand" href="#">single <span>malt</span></a>
+  <div class="footer-links">
+    <a href="#nooks">Nooks &amp; Crannies</a>
+    <a href="#en-route">En Route</a>
+    <a href="#dismal">The Dismal &amp; the Divine</a>
+  </div>
+  <div class="footer-copy">© 2018 – 2026 &nbsp;·&nbsp; All rights reserved</div>
+</footer>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    document.getElementById('bar').style.width = pct + '%';
+  });
+</script>
+</body>
+</html>
