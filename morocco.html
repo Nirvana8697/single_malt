@@ -142,52 +142,50 @@
     color: var(--teal);
   }
 
-  /* ── PHOTO GALLERY STRIP ── */
-  .gallery-strip {
-    margin: 2.8rem 0;
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-    padding: 1.8rem 0;
-  }
-  .gallery-label {
-    font-family: 'Inconsolata', monospace;
-    font-size: .6rem; letter-spacing: .22em; text-transform: uppercase;
-    color: var(--muted); margin-bottom: 1.1rem;
-    display: flex; align-items: center; gap: .8rem;
-  }
-  .gallery-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
-
-  .gallery-thumbs {
-    display: flex; gap: 1rem;
-    overflow-x: auto; padding-bottom: .6rem;
-    scrollbar-width: thin; scrollbar-color: var(--rule) transparent;
-  }
-  .gallery-thumbs::-webkit-scrollbar { height: 3px; }
-  .gallery-thumbs::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 2px; }
-
-  .thumb {
-    flex: 0 0 auto; width: 170px; height: 115px;
-    overflow: hidden; cursor: zoom-in;
-    border: 1px solid var(--rule); position: relative;
+  /* ── INLINE EDITORIAL PHOTOS ── */
+  .photo {
+    margin: 2rem 0 2.4rem;
+    cursor: zoom-in;
+    border: 1px solid var(--rule);
+    overflow: hidden;
     transition: border-color .25s;
   }
-  .thumb:hover { border-color: var(--amber); }
-  .thumb img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-    filter: sepia(10%) contrast(1.03);
+  .photo:hover { border-color: var(--amber); }
+
+  .photo.float-right {
+    float: right;
+    width: 46%;
+    margin: 0.4rem 0 1.6rem 2.2rem;
+  }
+  .photo.float-left {
+    float: left;
+    width: 46%;
+    margin: 0.4rem 2.2rem 1.6rem 0;
+  }
+  .photo.full {
+    width: 100%;
+    clear: both;
+    margin: 2.4rem 0;
+  }
+
+  .photo img {
+    width: 100%; display: block;
+    object-fit: cover;
+    filter: sepia(8%) contrast(1.04);
     transition: transform .5s ease, filter .3s;
   }
-  .thumb:hover img { transform: scale(1.08); filter: sepia(0%) contrast(1.08); }
+  .photo:hover img { transform: scale(1.03); filter: sepia(0%) contrast(1.08); }
 
-  .thumb-caption {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    background: rgba(26,18,8,.72);
-    font-family: 'Inconsolata', monospace;
-    font-size: .52rem; letter-spacing: .1em; text-transform: uppercase;
-    color: #e8dcc8; padding: .28rem .5rem;
-    opacity: 0; transition: opacity .25s;
+  .photo figcaption {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: .82rem;
+    color: var(--muted); line-height: 1.5;
+    padding: .55rem .7rem .6rem;
+    border-top: 1px solid var(--rule);
+    background: var(--parchment);
   }
-  .thumb:hover .thumb-caption { opacity: 1; }
+
+  .clearfix::after { content: ''; display: table; clear: both; }
 
   /* ── LIGHTBOX ── */
   #lightbox {
@@ -262,7 +260,9 @@
   @media (max-width: 640px) {
     header { flex-wrap: wrap; gap: 1rem; justify-content: center; }
     .header-right { display: none; }
-    .thumb { width: 135px; height: 90px; }
+    .photo.float-right, .photo.float-left {
+      float: none; width: 100%; margin: 1.8rem 0;
+    }
     footer { flex-direction: column; gap: 1rem; text-align: center; }
   }
 </style>
@@ -332,60 +332,62 @@
 
     <p>Next day's highlight was the blue city of Chefchaouen. Jodhpur, as I have heard from people who have been there, bears resemblance to this city. But I have never been to Jodhpur. I was awestruck by the beauty of the city. Every house was similarly colored. The reason for the blue color in both the cities is probably the same — it helped keep the houses cool from the desert heat. There are other theories as well: the most popular being a Jewish tradition from the 1930s which relates the blue color to the sky and heaven. After a sumptuous lunch with local dishes, with a generous serving of dates and olives, we had a cup of sugary mint tea, almost a national drink of Morocco. The cafes in Morocco smell of coffee and cigarettes. The country is yet to graduate from smoking, and everyone seems to enjoy their occasional cigarette.</p>
 
-    <!-- PHOTO GALLERY -->
-    <div class="gallery-strip">
-      <div class="gallery-label">Photographs</div>
-      <div class="gallery-thumbs">
-        <div class="thumb"
-             data-src="morocco-chefchaouen.jpg"
-             data-caption="Chefchaouen — the blue city">
-          <img src="morocco-chefchaouen.jpg" alt="Chefchaouen blue streets">
-          <div class="thumb-caption">Chefchaouen</div>
-        </div>
-        <div class="thumb"
-             data-src="morocco-sahara-1.jpg"
-             data-caption="The Sahara — camel ride to the sunset point">
-          <img src="morocco-sahara-1.jpg" alt="Sahara dunes with camel riders">
-          <div class="thumb-caption">The Sahara</div>
-        </div>
-        <div class="thumb"
-             data-src="morocco-sahara-2.jpg"
-             data-caption="The Sahara at dusk">
-          <img src="morocco-sahara-2.jpg" alt="Sahara dunes at sunset">
-          <div class="thumb-caption">Dusk over the dunes</div>
-        </div>
-        <div class="thumb"
-             data-src="morocco-ait-ben-haddou.jpg"
-             data-caption="Ait-Ben-Haddou — where Gladiator was filmed">
-          <img src="morocco-ait-ben-haddou.jpg" alt="Ait-Ben-Haddou fortification">
-          <div class="thumb-caption">Ait-Ben-Haddou</div>
-        </div>
-        <div class="thumb"
-             data-src="morocco-us.jpg"
-             data-caption="Looking like Arabs — somewhere near the Sahara">
-          <img src="morocco-us.jpg" alt="Nirvana and Devoja in the desert">
-          <div class="thumb-caption">Looking like Arabs</div>
-        </div>
-      </div>
-    </div>
+    <figure class="photo float-right"
+            data-src="morocco-chefchaouen.jpg"
+            data-caption="Chefchaouen — every wall, every step, every door painted the same impossible blue">
+      <img src="morocco-chefchaouen.jpg" alt="The blue streets of Chefchaouen">
+      <figcaption>Chefchaouen — every wall, every step, every door painted the same impossible blue</figcaption>
+    </figure>
 
     <p>Next stop was Fez: the intellectual and religious capital of the country. On our way to Fez we made a brief stop at Rabat where the Atlantic and the Mediterranean meet each other, but do not mix. They bring their distinct shades of blue with them, and at Rabat, try to win each other over in their own oceany ways. At Fez, we had a day long tour of the old city — a walking city, constructed at least a thousand years ago. The roads could only accommodate traditional hand-drawn carts or bullock carts at best. There were dark alleyways and brighter squares, blacksmiths with traditional tools repairing utensils. The highlight of the old city was the Medersas, an ancient school of Koranic studies. The building had a picturesque courtyard and architecture that has its parallels in the Mughal buildings in India. We had our lunch in a restaurant within the old city itself — the house of a noble family converted to an eatery serving traditional Moroccan cuisine. We ended our old city tour with a tannery visit, which I do not recommend, especially after lunch!</p>
 
     <p>With Fez, we were moving inland already, away from the oceans. The temperature was climbing and the great Sahara was near. We were a bit worried about the heat and by then I had gotten a sunburn on my feet because of my uncovered open-toe slippers. It was time to look like an Arab as well. We bought scarfs to cover our heads, a bit later than we should have. The landscape had changed to being rocky, barren, and dusty. However, there were vast stretches of palm and date trees, oases in the desert. They provided cool shades to tired travelers in the past who would travel across the desert to Timbuktu, an ancient market place located in present day Mali. We entered the desert on 4X4 vehicles and we actually saw milestones mentioning the distance to Timbuktu from Erfoud, our entry-point to the great Sahara.</p>
 
+    <figure class="photo float-left"
+            data-src="morocco-us.jpg"
+            data-caption="Looking like Arabs — scarves bought a little later than we should have">
+      <img src="morocco-us.jpg" alt="Nirvana and Devoja in the Moroccan desert">
+      <figcaption>Looking like Arabs — scarves bought a little later than we should have</figcaption>
+    </figure>
+
     <p>The Sahara is orange! It is nothing like you could ever imagine. The first sight of the dunes would give you goosebumps — no matter how much you have read about them before. We rode on camels to a sunset point. I was lucky to get an extremely well-behaved camel, unlike many of our co-travelers. We spent some time on the dunes and experienced changing colors of the desert as the sun went down. We slept in tents that night and enjoyed local dance performance, and as usual, great food.</p>
 
+    <div class="clearfix"></div>
+
+    <figure class="photo full"
+            data-src="morocco-sahara-2.jpg"
+            data-caption="The Sahara at dusk — the dunes change colour as the sun descends, from gold to amber to a deep, almost theatrical orange">
+      <img src="morocco-sahara-2.jpg" alt="Sahara dunes at sunset" style="max-height:420px;object-fit:cover;">
+      <figcaption>The Sahara at dusk — the dunes change colour as the sun descends, from gold to amber to a deep, almost theatrical orange</figcaption>
+    </figure>
+
     <p>The rocky and dusty parts of Morocco had more to offer. Next, we visited the gorges of Todgha and Ait-Ben-Haddou. The latter was a fortification constructed before the 7th century AD. Historians are unsure about who might have constructed it, but modern Hollywood films have made full use of the landscape and the unique ancient structures of the place. The famous film, <em>Gladiator</em>, was shot at this location.</p>
+
+    <figure class="photo float-right"
+            data-src="morocco-ait-ben-haddou.jpg"
+            data-caption="Ait-Ben-Haddou — a pre-7th century fortification, and the backdrop for Gladiator">
+      <img src="morocco-ait-ben-haddou.jpg" alt="Ait-Ben-Haddou fortification">
+      <figcaption>Ait-Ben-Haddou — a pre-7th century fortification, and the backdrop for <em>Gladiator</em></figcaption>
+    </figure>
 
     <p>Our final destination was the city of Marrakech. The city is full of colors, roadside cafes, and has a square that sells carpets and olives and hand-painted bowls, and much more, including performances by snake-charmers, who may insist for a tip, even if you show no interest in their art form. Tipping is common in Morocco — our guide Mohamed used to collect a small token amount every morning and paid the tips on our behalf. This was a relief!</p>
 
     <p>Marrakech is where Devoja started our collection of hand-painted bowls, one from every country we visit. Our half-day city tour was converted to a full day bazaar adventure with Devoja bargaining with local traders, offering prices which, I am sure, were lower than the product's cost, and walking away in anticipation of a call back. My interventions were always met with a frown, sometimes even from the shopkeepers! Unable to keep up, I helped myself with some spicy green and red olives, and packed some for home. We bought a small blue and white geometric rug from this bazaar which adorns our Hyderabad bedroom, and brings back memories of that day, that suq, that smell, and that city!</p>
+
+    <div class="clearfix"></div>
 
     <p>We stayed at Hotel Palm Plaza, across the street from the La Mamounia hotel, where Winston Churchill used to stay during his visits. He famously loved Marrakech, calling it the most lovely spot in the world, and a premier destination for his winter painting holidays starting in 1935.</p>
 
     <p>One afternoon, when we were sitting in a cafe after a long walk across town, we heard a local musician playing Hindi songs on a mandolin. We were surprised to know that Indian films were so popular in Morocco, to the extent that the movie theatres go full house when new Hindi movies make their way to town. The entire youth knows of Shah Rukh Khan, adores him, and imitates his character in popular films. Cinema has brought our civilizations closer, breaking barriers of language, geography, and culture.</p>
 
     <p>By then, we were craving for home; in my opinion, a signal of a trip well spent. It reenergizes you to get back to work with memories of joyous times. Also, by then, I had made up my mind to come back to Morocco again. A few weeks back I watched <em>Lonely Planet</em>, a Netflix movie featuring Laura Dern, and starting to coax my wife again.</p>
+
+    <figure class="photo full"
+            data-src="morocco-sahara-1.jpg"
+            data-caption="Riding to the sunset point — the Sahara stretches to the horizon, indifferent and magnificent">
+      <img src="morocco-sahara-1.jpg" alt="Camel riders on the Sahara dunes" style="max-height:420px;object-fit:cover;">
+      <figcaption>Riding to the sunset point — the Sahara stretches to the horizon, indifferent and magnificent</figcaption>
+    </figure>
 
     <p>Not all the memories of a trip even as beautiful as Morocco stays forever. What remains is a happy haze; a cloud in which you can put your head into and pen down a few words one evening, over a glass of single malt!</p>
 
@@ -409,13 +411,13 @@
 
   // Lightbox
   const photos = [];
-  document.querySelectorAll('.thumb').forEach((thumb, i) => {
-    photos.push({ src: thumb.dataset.src, caption: thumb.dataset.caption });
-    thumb.addEventListener('click', () => openLightbox(i));
+  document.querySelectorAll('figure.photo').forEach((fig, i) => {
+    photos.push({ src: fig.dataset.src, caption: fig.dataset.caption });
+    fig.addEventListener('click', () => openLightbox(i));
   });
 
   // Also open from hero
-  document.querySelector('.essay-hero').addEventListener('click', () => openLightbox(1));
+  document.querySelector('.essay-hero').addEventListener('click', () => openLightbox(0));
 
   const lb     = document.getElementById('lightbox');
   const lbImg  = document.getElementById('lb-img');
