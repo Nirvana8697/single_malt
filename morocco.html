@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Happy Haze — single malt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inconsolata:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:         #1c1008;
+    --parchment:   #f5ead8;
+    --warm-mid:    #ecdcc4;
+    --amber:       #c4622d;
+    --amber-light: #e07840;
+    --muted:       #8a7060;
+    --rule:        #d4b898;
+    --cream:       #faf2e4;
+    --c-route:     #c4622d;
+    --teal:        #2e6e6a;
+    --saffron:     #d4922a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 20px;
+    line-height: 1.85;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 999; opacity: .45;
+  }
+
+  #bar {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: linear-gradient(90deg, var(--c-route), var(--saffron), var(--teal));
+    z-index: 1000; width: 0; transition: width .08s linear;
+  }
+
+  /* ── HEADER ── */
+  header {
+    border-bottom: 1px solid var(--rule);
+    padding: 1.5rem clamp(1.5rem,6vw,5rem);
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--cream);
+  }
+  .back-link {
+    font-family: 'Inconsolata', monospace;
+    font-size: .62rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none;
+    display: inline-flex; align-items: center; gap: .5rem;
+    transition: color .2s;
+  }
+  .back-link:hover { color: var(--amber); }
+  .back-link svg { transition: transform .2s; }
+  .back-link:hover svg { transform: translateX(-3px); }
+
+  .site-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 900; letter-spacing: -.02em;
+    color: var(--ink); text-decoration: none;
+  }
+  .site-name em { font-style: normal; color: var(--amber); }
+
+  .header-right {
+    font-family: 'Inconsolata', monospace;
+    font-size: .6rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--c-route); text-align: right; line-height: 1.8;
+  }
+
+  /* ── HERO ── */
+  .essay-hero {
+    width: 100%; max-height: 500px; overflow: hidden; position: relative;
+    opacity: 0; animation: up .9s ease .1s forwards;
+    cursor: zoom-in;
+  }
+  .essay-hero img {
+    width: 100%; object-fit: cover; display: block; max-height: 500px;
+    filter: sepia(10%) contrast(1.05);
+    transition: transform .6s ease;
+  }
+  .essay-hero:hover img { transform: scale(1.02); }
+  .essay-hero::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 55%, var(--cream) 100%);
+  }
+
+  /* ── ESSAY WRAP ── */
+  .essay-wrap {
+    max-width: 740px; margin: 0 auto;
+    padding: 0 clamp(1.5rem,5vw,3rem) 6rem;
+  }
+
+  /* ── ESSAY HEADER ── */
+  .essay-header {
+    text-align: center; padding: 3rem 0 2.5rem;
+    border-bottom: 1px solid var(--rule); margin-bottom: 3rem;
+    opacity: 0; animation: up .8s ease .2s forwards;
+  }
+  .essay-cat {
+    display: inline-flex; align-items: center; gap: .6rem;
+    font-family: 'Inconsolata', monospace;
+    font-size: .6rem; letter-spacing: .25em; text-transform: uppercase;
+    color: var(--c-route); margin-bottom: 1.2rem;
+  }
+  .essay-cat::before, .essay-cat::after {
+    content: ''; width: 28px; height: 1px; background: var(--c-route);
+  }
+  .essay-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem,5vw,3.8rem); font-weight: 900;
+    line-height: 1.08; color: var(--ink); margin-bottom: .6rem;
+  }
+  .essay-subtitle {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: clamp(1rem,2vw,1.4rem); color: var(--muted); margin-bottom: 1.5rem;
+  }
+  .essay-meta {
+    font-family: 'Inconsolata', monospace;
+    font-size: .62rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted);
+  }
+  .essay-meta span + span::before { content: ' · '; }
+
+  /* ── PROSE ── */
+  .essay-prose { opacity: 0; animation: up .8s ease .35s forwards; }
+  .essay-prose p {
+    margin-bottom: 1.7rem; font-size: 1.05rem; font-weight: 300; color: #2e2010;
+  }
+  .essay-prose p:first-child::first-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 4.2rem; font-weight: 900;
+    float: left; line-height: .82; margin: .08em .12em 0 0;
+    color: var(--teal);
+  }
+
+  /* ── PHOTO GALLERY STRIP ── */
+  .gallery-strip {
+    margin: 2.8rem 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 1.8rem 0;
+  }
+  .gallery-label {
+    font-family: 'Inconsolata', monospace;
+    font-size: .6rem; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 1.1rem;
+    display: flex; align-items: center; gap: .8rem;
+  }
+  .gallery-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+  .gallery-thumbs {
+    display: flex; gap: 1rem;
+    overflow-x: auto; padding-bottom: .6rem;
+    scrollbar-width: thin; scrollbar-color: var(--rule) transparent;
+  }
+  .gallery-thumbs::-webkit-scrollbar { height: 3px; }
+  .gallery-thumbs::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 2px; }
+
+  .thumb {
+    flex: 0 0 auto; width: 170px; height: 115px;
+    overflow: hidden; cursor: zoom-in;
+    border: 1px solid var(--rule); position: relative;
+    transition: border-color .25s;
+  }
+  .thumb:hover { border-color: var(--amber); }
+  .thumb img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    filter: sepia(10%) contrast(1.03);
+    transition: transform .5s ease, filter .3s;
+  }
+  .thumb:hover img { transform: scale(1.08); filter: sepia(0%) contrast(1.08); }
+
+  .thumb-caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: rgba(26,18,8,.72);
+    font-family: 'Inconsolata', monospace;
+    font-size: .52rem; letter-spacing: .1em; text-transform: uppercase;
+    color: #e8dcc8; padding: .28rem .5rem;
+    opacity: 0; transition: opacity .25s;
+  }
+  .thumb:hover .thumb-caption { opacity: 1; }
+
+  /* ── LIGHTBOX ── */
+  #lightbox {
+    display: none; position: fixed; inset: 0; z-index: 9000;
+    background: rgba(12,8,4,.95);
+    align-items: center; justify-content: center;
+    cursor: zoom-out;
+  }
+  #lightbox.open { display: flex; }
+
+  #lb-img {
+    max-width: 90vw; max-height: 85vh;
+    object-fit: contain; display: block;
+    box-shadow: 0 30px 100px rgba(0,0,0,.7);
+    cursor: default;
+  }
+  #lb-caption {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1rem;
+    color: rgba(240,232,216,.6); white-space: nowrap; pointer-events: none;
+  }
+  #lb-close {
+    position: absolute; top: 1.5rem; right: 2rem;
+    font-family: 'Inconsolata', monospace;
+    font-size: .62rem; letter-spacing: .2em; text-transform: uppercase;
+    color: rgba(240,232,216,.45); cursor: pointer;
+    background: none; border: none; transition: color .2s; z-index: 2;
+  }
+  #lb-close:hover { color: rgba(240,232,216,1); }
+
+  .lb-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer;
+    color: rgba(240,232,216,.3); font-size: 2.2rem;
+    padding: 1rem 1.5rem; transition: color .2s; z-index: 2;
+  }
+  .lb-nav:hover { color: rgba(240,232,216,.9); }
+  #lb-prev { left: 0; }
+  #lb-next { right: 0; }
+
+  #lb-counter {
+    position: absolute; top: 1.8rem; left: 50%; transform: translateX(-50%);
+    font-family: 'Inconsolata', monospace;
+    font-size: .58rem; letter-spacing: .2em; text-transform: uppercase;
+    color: rgba(240,232,216,.3);
+  }
+
+  /* ── END ORNAMENT ── */
+  .essay-end {
+    text-align: center; margin: 3rem 0 2rem;
+    color: var(--amber); font-size: .55rem; letter-spacing: .5em; opacity: .6;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--rule); background: var(--parchment);
+    padding: 2rem clamp(1.5rem,5vw,4rem);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; font-weight: 900; color: var(--ink); text-decoration: none;
+  }
+  .footer-brand span { color: var(--amber); }
+  .footer-copy {
+    font-family: 'Inconsolata', monospace;
+    font-size: .57rem; letter-spacing: .12em; color: var(--muted); text-transform: uppercase;
+  }
+
+  @keyframes up { to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 640px) {
+    header { flex-wrap: wrap; gap: 1rem; justify-content: center; }
+    .header-right { display: none; }
+    .thumb { width: 135px; height: 90px; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div id="bar"></div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" role="dialog" aria-modal="true">
+  <button id="lb-close">✕ &nbsp;Close</button>
+  <div id="lb-counter"></div>
+  <button class="lb-nav" id="lb-prev">&#8592;</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-nav" id="lb-next">&#8594;</button>
+  <div id="lb-caption"></div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <a class="back-link" href="index.html">
+    <svg width="14" height="10" viewBox="0 0 14 10" fill="none"
+         stroke="currentColor" stroke-width="1.5">
+      <path d="M13 5H1M6 1L2 5l4 4"/>
+    </svg>
+    single malt
+  </a>
+  <a class="site-name" href="index.html">single&nbsp;<em>malt</em></a>
+  <div class="header-right">Song of the Little Road<br>Travelogue</div>
+</header>
+
+<!-- HERO — Sahara at sunset -->
+<div class="essay-hero">
+  <img src="morocco-sahara-1.jpg" alt="Camel riders on the Sahara dunes at sunset">
+</div>
+
+<main class="essay-wrap">
+
+  <div class="essay-header">
+    <div class="essay-cat">Song of the Little Road</div>
+    <h1 class="essay-title">Morocco — A Happy Haze</h1>
+    <p class="essay-subtitle">Summer 2022</p>
+    <p class="essay-meta">
+      <span>2022</span>
+      <span>Travelogue</span>
+      <span>15 min read</span>
+    </p>
+  </div>
+
+  <div class="essay-prose">
+
+    <p>It was the summer of 2022 and we had just gotten married. Morocco was an impulsive decision. Egypt, Europe and the other common touristy places were too expensive, the South East of Asia was too far for Devoja, and the US, too familiar. I was a young faculty in India, and had somehow managed to get a paper selected for a conference in Miami. The plan was to go there first, together, and then after a couple of days in Chicago, which we still call our second home, off to Morocco.</p>
+
+    <p>We booked a travel agent while the inertia of the impulse lasted. Too much thinking and searching for a perfect destination often times ruin all the fun. In retrospect, if we had not impulse-booked, we would have missed out on one of the best trips of our lives. By the way, our travel agent booked Air Canada flights first and we had to cancel them because we could not arrange for transit visas for Canada. Later, we got our own tickets without the Canada transit requirement. Impulse actions are not stupidity-proof!</p>
+
+    <p>The Casablanca airport seemed shabby, making us question our decision — "Is this what we came for!". We checked into a hotel and decided to give Bogart and Bergman's Casablanca a fair chance. And, we fell in love within an hour. The city is an eclectic mixture of a deeply rooted Arab culture and French modernity inherited from its recent colonial past. We had our first meal of cous cous and tajine. The restaurant was decorated with gorgeous rugs, traditional coffee dallahs, and warm yellow lighting. The spice palette seemed distinct, different, yet close to home. This meal was one of the best we had in this trip.</p>
+
+    <p>Geographically, the country looks like a skull-cap of Africa bordered by both the Mediterranean and the Atlantic. Since most of our trip was following the coastline our Moroccan summer was warm, yet perfect to be out and about. We finished our first day with a glass of orange juice, or as they call it <em>jus-de-orange</em>. Tired from a long flight, we slept through our first debrief meeting scheduled for late evening with our tour guide Mohamed.</p>
+
+    <p>Writing this memoir, I realize that parts of the trip has become a happy haze in my memory. Part of me regrets not taking this up earlier, when all the events were fresh in my memory, while the other part is enjoying digging through the dust and seeking the treasures.</p>
+
+    <p>The next day started with a reprimand from our punctual tour guide for missing the session last night. We met our tour group members: a Pakistani family settled in Canada, husband, wife and two children, a British elderly couple, retired and traveling the world, and a young British couple who mostly kept to themselves. We made friends with the Pakistani family and the elderly British couple. I remember an incident where the British man was surprised to find out that one could buy single pieces of cigarettes from departmental stores in Morocco, and almost ran to tell his wife of this very special facility during one of our pit stops. Surely this is an impossibility in England. Another thing that bothered him was Oriental style toilets, which were almost everywhere in Morocco. I remember seeing him coming out of a bathroom all disappointed — <em>"It's a **** hole on the floor!!"</em></p>
+
+    <p>That day was blocked for a city tour of Casablanca, by now a beauty to behold, with its Art Deco style buildings and an old city Arab suq. What was new to us on that day was the panoramic Atlantic view from the Kasbah of the Oudayas and the Hassan II mosque, a white marvel built on land reclaimed from the Atlantic. We ended our day at the city of Tangier, a port city on the Strait of Gibraltar.</p>
+
+    <p>At the Tangier hotel Mohamed told us that the land mass we could see from our hotel window, across the strait was actually Portugal. Insignificant as it may sound, I could not help but ponder about a world map. Where exactly were we on it — Africa!! Where it all started — Kolkata, about a time less than a decade ago, when Africa was only a distant dream, a dream that was familiarized by Bibhutibhushan's Shankar. And then, how life happened! The thought made me wonder about how new phases unravel as one moves along, and how time washes off everything that comes on its way.</p>
+
+    <p>Next day's highlight was the blue city of Chefchaouen. Jodhpur, as I have heard from people who have been there, bears resemblance to this city. But I have never been to Jodhpur. I was awestruck by the beauty of the city. Every house was similarly colored. The reason for the blue color in both the cities is probably the same — it helped keep the houses cool from the desert heat. There are other theories as well: the most popular being a Jewish tradition from the 1930s which relates the blue color to the sky and heaven. After a sumptuous lunch with local dishes, with a generous serving of dates and olives, we had a cup of sugary mint tea, almost a national drink of Morocco. The cafes in Morocco smell of coffee and cigarettes. The country is yet to graduate from smoking, and everyone seems to enjoy their occasional cigarette.</p>
+
+    <!-- PHOTO GALLERY -->
+    <div class="gallery-strip">
+      <div class="gallery-label">Photographs</div>
+      <div class="gallery-thumbs">
+        <div class="thumb"
+             data-src="morocco-chefchaouen.jpg"
+             data-caption="Chefchaouen — the blue city">
+          <img src="morocco-chefchaouen.jpg" alt="Chefchaouen blue streets">
+          <div class="thumb-caption">Chefchaouen</div>
+        </div>
+        <div class="thumb"
+             data-src="morocco-sahara-1.jpg"
+             data-caption="The Sahara — camel ride to the sunset point">
+          <img src="morocco-sahara-1.jpg" alt="Sahara dunes with camel riders">
+          <div class="thumb-caption">The Sahara</div>
+        </div>
+        <div class="thumb"
+             data-src="morocco-sahara-2.jpg"
+             data-caption="The Sahara at dusk">
+          <img src="morocco-sahara-2.jpg" alt="Sahara dunes at sunset">
+          <div class="thumb-caption">Dusk over the dunes</div>
+        </div>
+        <div class="thumb"
+             data-src="morocco-ait-ben-haddou.jpg"
+             data-caption="Ait-Ben-Haddou — where Gladiator was filmed">
+          <img src="morocco-ait-ben-haddou.jpg" alt="Ait-Ben-Haddou fortification">
+          <div class="thumb-caption">Ait-Ben-Haddou</div>
+        </div>
+        <div class="thumb"
+             data-src="morocco-us.jpg"
+             data-caption="Looking like Arabs — somewhere near the Sahara">
+          <img src="morocco-us.jpg" alt="Nirvana and Devoja in the desert">
+          <div class="thumb-caption">Looking like Arabs</div>
+        </div>
+      </div>
+    </div>
+
+    <p>Next stop was Fez: the intellectual and religious capital of the country. On our way to Fez we made a brief stop at Rabat where the Atlantic and the Mediterranean meet each other, but do not mix. They bring their distinct shades of blue with them, and at Rabat, try to win each other over in their own oceany ways. At Fez, we had a day long tour of the old city — a walking city, constructed at least a thousand years ago. The roads could only accommodate traditional hand-drawn carts or bullock carts at best. There were dark alleyways and brighter squares, blacksmiths with traditional tools repairing utensils. The highlight of the old city was the Medersas, an ancient school of Koranic studies. The building had a picturesque courtyard and architecture that has its parallels in the Mughal buildings in India. We had our lunch in a restaurant within the old city itself — the house of a noble family converted to an eatery serving traditional Moroccan cuisine. We ended our old city tour with a tannery visit, which I do not recommend, especially after lunch!</p>
+
+    <p>With Fez, we were moving inland already, away from the oceans. The temperature was climbing and the great Sahara was near. We were a bit worried about the heat and by then I had gotten a sunburn on my feet because of my uncovered open-toe slippers. It was time to look like an Arab as well. We bought scarfs to cover our heads, a bit later than we should have. The landscape had changed to being rocky, barren, and dusty. However, there were vast stretches of palm and date trees, oases in the desert. They provided cool shades to tired travelers in the past who would travel across the desert to Timbuktu, an ancient market place located in present day Mali. We entered the desert on 4X4 vehicles and we actually saw milestones mentioning the distance to Timbuktu from Erfoud, our entry-point to the great Sahara.</p>
+
+    <p>The Sahara is orange! It is nothing like you could ever imagine. The first sight of the dunes would give you goosebumps — no matter how much you have read about them before. We rode on camels to a sunset point. I was lucky to get an extremely well-behaved camel, unlike many of our co-travelers. We spent some time on the dunes and experienced changing colors of the desert as the sun went down. We slept in tents that night and enjoyed local dance performance, and as usual, great food.</p>
+
+    <p>The rocky and dusty parts of Morocco had more to offer. Next, we visited the gorges of Todgha and Ait-Ben-Haddou. The latter was a fortification constructed before the 7th century AD. Historians are unsure about who might have constructed it, but modern Hollywood films have made full use of the landscape and the unique ancient structures of the place. The famous film, <em>Gladiator</em>, was shot at this location.</p>
+
+    <p>Our final destination was the city of Marrakech. The city is full of colors, roadside cafes, and has a square that sells carpets and olives and hand-painted bowls, and much more, including performances by snake-charmers, who may insist for a tip, even if you show no interest in their art form. Tipping is common in Morocco — our guide Mohamed used to collect a small token amount every morning and paid the tips on our behalf. This was a relief!</p>
+
+    <p>Marrakech is where Devoja started our collection of hand-painted bowls, one from every country we visit. Our half-day city tour was converted to a full day bazaar adventure with Devoja bargaining with local traders, offering prices which, I am sure, were lower than the product's cost, and walking away in anticipation of a call back. My interventions were always met with a frown, sometimes even from the shopkeepers! Unable to keep up, I helped myself with some spicy green and red olives, and packed some for home. We bought a small blue and white geometric rug from this bazaar which adorns our Hyderabad bedroom, and brings back memories of that day, that suq, that smell, and that city!</p>
+
+    <p>We stayed at Hotel Palm Plaza, across the street from the La Mamounia hotel, where Winston Churchill used to stay during his visits. He famously loved Marrakech, calling it the most lovely spot in the world, and a premier destination for his winter painting holidays starting in 1935.</p>
+
+    <p>One afternoon, when we were sitting in a cafe after a long walk across town, we heard a local musician playing Hindi songs on a mandolin. We were surprised to know that Indian films were so popular in Morocco, to the extent that the movie theatres go full house when new Hindi movies make their way to town. The entire youth knows of Shah Rukh Khan, adores him, and imitates his character in popular films. Cinema has brought our civilizations closer, breaking barriers of language, geography, and culture.</p>
+
+    <p>By then, we were craving for home; in my opinion, a signal of a trip well spent. It reenergizes you to get back to work with memories of joyous times. Also, by then, I had made up my mind to come back to Morocco again. A few weeks back I watched <em>Lonely Planet</em>, a Netflix movie featuring Laura Dern, and starting to coax my wife again.</p>
+
+    <p>Not all the memories of a trip even as beautiful as Morocco stays forever. What remains is a happy haze; a cloud in which you can put your head into and pen down a few words one evening, over a glass of single malt!</p>
+
+  </div>
+
+  <div class="essay-end">◆ &nbsp; ◆ &nbsp; ◆</div>
+
+</main>
+
+<footer>
+  <a class="footer-brand" href="index.html">single <span>malt</span></a>
+  <div class="footer-copy">© 2018 – 2026 &nbsp;·&nbsp; All rights reserved</div>
+</footer>
+
+<script>
+  // Scroll progress
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    document.getElementById('bar').style.width = pct + '%';
+  });
+
+  // Lightbox
+  const photos = [];
+  document.querySelectorAll('.thumb').forEach((thumb, i) => {
+    photos.push({ src: thumb.dataset.src, caption: thumb.dataset.caption });
+    thumb.addEventListener('click', () => openLightbox(i));
+  });
+
+  // Also open from hero
+  document.querySelector('.essay-hero').addEventListener('click', () => openLightbox(1));
+
+  const lb     = document.getElementById('lightbox');
+  const lbImg  = document.getElementById('lb-img');
+  const lbCap  = document.getElementById('lb-caption');
+  const lbCtr  = document.getElementById('lb-counter');
+  let current  = 0;
+
+  function openLightbox(i) {
+    current = i;
+    showPhoto();
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function showPhoto() {
+    lbImg.src = photos[current].src;
+    lbCap.textContent = photos[current].caption;
+    lbCtr.textContent = (current + 1) + ' / ' + photos.length;
+  }
+
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  document.getElementById('lb-prev').addEventListener('click', (e) => {
+    e.stopPropagation();
+    current = (current - 1 + photos.length) % photos.length;
+    showPhoto();
+  });
+  document.getElementById('lb-next').addEventListener('click', (e) => {
+    e.stopPropagation();
+    current = (current + 1) % photos.length;
+    showPhoto();
+  });
+  lb.addEventListener('click', (e) => {
+    if (e.target === lb) closeLightbox();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') { current = (current - 1 + photos.length) % photos.length; showPhoto(); }
+    if (e.key === 'ArrowRight') { current = (current + 1) % photos.length; showPhoto(); }
+  });
+</script>
+</body>
+</html>
