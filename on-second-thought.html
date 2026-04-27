@@ -104,76 +104,69 @@
   /* ── PAGE BODY ── */
   .page { max-width: 1260px; margin: 0 auto; padding: clamp(2rem,5vw,4rem) clamp(1.5rem,5vw,4rem) 6rem; }
 
-  /* ── FEATURED POST (first/latest) ── */
-  .post-featured {
+  /* ── POST CARDS — uniform stacked layout ── */
+  .post-card {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 400px 1fr;
     border: 1px solid var(--rule);
     overflow: hidden;
-    margin-bottom: 3rem;
-    text-decoration: none;
-    color: inherit;
-    opacity: 0; animation: up .9s ease .1s forwards;
+    text-decoration: none; color: inherit;
+    margin-bottom: 2rem;
+    opacity: 0; animation: up .8s ease forwards;
     transition: border-color .25s;
   }
-  .post-featured:hover { border-color: var(--amber); }
+  .post-card:nth-child(1) { animation-delay: .1s; }
+  .post-card:nth-child(2) { animation-delay: .25s; }
+  .post-card:hover { border-color: var(--amber); }
 
-  .post-featured-img {
-    position: relative; overflow: hidden; min-height: 420px;
+  .post-card-img {
+    position: relative; overflow: hidden; min-height: 320px;
   }
-  .post-featured-img img {
+  .post-card-img img {
     width: 100%; height: 100%; object-fit: cover; display: block;
     filter: sepia(20%) contrast(1.05) brightness(.9);
     transition: transform .7s ease, filter .4s;
   }
-  .post-featured:hover .post-featured-img img {
-    transform: scale(1.04);
-    filter: sepia(5%) contrast(1.08) brightness(.95);
+  .post-card:hover .post-card-img img {
+    transform: scale(1.04); filter: sepia(5%) contrast(1.08) brightness(.95);
   }
-  .post-featured-img::after {
+  .post-card-img::after {
     content: ''; position: absolute; inset: 0;
-    background: linear-gradient(90deg, transparent 60%, var(--cream) 100%);
+    background: linear-gradient(90deg, transparent 65%, var(--cream) 100%);
   }
 
-  .post-featured-body {
-    padding: 3rem 2.5rem 3rem 2rem;
+  .post-card-body {
+    padding: 2.5rem 2.5rem 2.5rem 2rem;
     display: flex; flex-direction: column; justify-content: center;
-    background: var(--cream);
     border-left: 1px solid var(--rule);
   }
-
-  .post-label {
+  .post-card-label {
     display: inline-flex; align-items: center; gap: .5rem;
     font-family: 'Inconsolata', monospace;
     font-size: .58rem; letter-spacing: .22em; text-transform: uppercase;
     color: var(--c-nooks); margin-bottom: 1rem;
   }
-  .post-label::before { content: ''; width: 18px; height: 1px; background: var(--c-nooks); }
-
-  .post-featured-title {
+  .post-card-label::before { content: ''; width: 18px; height: 1px; background: var(--c-nooks); }
+  .post-card-title {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(1.6rem,2.8vw,2.6rem); font-weight: 900;
-    line-height: 1.1; color: var(--ink); margin-bottom: 1rem;
+    font-size: clamp(1.5rem,2.4vw,2.2rem); font-weight: 900;
+    line-height: 1.15; color: var(--ink); margin-bottom: .9rem;
     transition: color .2s;
   }
-  .post-featured:hover .post-featured-title { color: var(--amber); }
-
-  .post-rule { width: 32px; height: 1px; background: var(--rule); margin-bottom: 1rem; }
-
-  .post-featured-snippet {
+  .post-card:hover .post-card-title { color: var(--amber); }
+  .post-card-rule { width: 28px; height: 1px; background: var(--rule); margin-bottom: .9rem; }
+  .post-card-snippet {
     font-size: .97rem; font-style: italic; font-weight: 300;
     color: #4a3c2a; line-height: 1.8;
     border-left: 2px solid var(--amber-light);
-    padding-left: 1rem; margin-bottom: 1.5rem;
+    padding-left: 1rem; margin-bottom: 1.3rem;
   }
-
-  .post-meta {
+  .post-card-meta {
     font-family: 'Inconsolata', monospace;
     font-size: .6rem; letter-spacing: .12em; text-transform: uppercase;
-    color: var(--muted); margin-bottom: 1.5rem;
+    color: var(--muted); margin-bottom: 1.3rem;
   }
-  .post-meta span + span::before { content: ' · '; }
-
+  .post-card-meta span + span::before { content: ' · '; }
   .post-cta {
     display: inline-flex; align-items: center; gap: .55rem;
     font-family: 'Inconsolata', monospace;
@@ -182,78 +175,9 @@
     border-bottom: 1px solid var(--ink); padding-bottom: 2px;
     width: fit-content; transition: color .2s, border-color .2s;
   }
-  .post-featured:hover .post-cta { color: var(--amber); border-color: var(--amber); }
+  .post-card:hover .post-cta { color: var(--amber); border-color: var(--amber); }
   .post-cta svg { transition: transform .2s; }
-  .post-featured:hover .post-cta svg { transform: translateX(4px); }
-
-  /* ── SECONDARY POSTS GRID ── */
-  .posts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .post-card {
-    border: 1px solid var(--rule);
-    overflow: hidden;
-    text-decoration: none; color: inherit;
-    display: flex; flex-direction: column;
-    opacity: 0; animation: up .7s ease forwards;
-    transition: border-color .25s;
-    background: var(--cream);
-  }
-  .post-card:hover { border-color: var(--amber); }
-  .post-card:nth-child(1) { animation-delay: .3s; }
-  .post-card:nth-child(2) { animation-delay: .4s; }
-
-  .post-card-img {
-    position: relative; overflow: hidden; height: 220px;
-  }
-  .post-card-img img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-    filter: sepia(20%) contrast(1.05) brightness(.9);
-    transition: transform .6s ease, filter .4s;
-  }
-  .post-card:hover .post-card-img img {
-    transform: scale(1.05);
-    filter: sepia(5%) contrast(1.08);
-  }
-  .post-card-img::after {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(180deg, transparent 50%, var(--cream) 100%);
-  }
-
-  .post-card-body {
-    padding: 1.5rem 1.5rem 2rem;
-    display: flex; flex-direction: column; flex: 1;
-  }
-  .post-card-label {
-    font-family: 'Inconsolata', monospace;
-    font-size: .56rem; letter-spacing: .2em; text-transform: uppercase;
-    color: var(--c-nooks); margin-bottom: .6rem;
-  }
-  .post-card-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.25rem; font-weight: 700; line-height: 1.2;
-    color: var(--ink); margin-bottom: .6rem;
-    transition: color .2s;
-  }
-  .post-card:hover .post-card-title { color: var(--amber); }
-  .post-card-snippet {
-    font-size: .88rem; font-style: italic; color: var(--muted);
-    line-height: 1.65; margin-bottom: 1rem; flex: 1;
-  }
-  .post-card-meta {
-    font-family: 'Inconsolata', monospace;
-    font-size: .58rem; letter-spacing: .12em; text-transform: uppercase;
-    color: var(--rule);
-    display: flex; align-items: center; gap: .5rem;
-  }
-  .post-card-meta::before {
-    content: ''; flex: none; width: 16px; height: 1px; background: var(--rule);
-    transition: width .2s, background .2s;
-  }
-  .post-card:hover .post-card-meta::before { width: 28px; background: var(--amber); }
+  .post-card:hover .post-cta svg { transform: translateX(4px); }
 
   /* ── FOOTER ── */
   footer {
@@ -274,10 +198,10 @@
   @keyframes up { to { opacity: 1; transform: translateY(0); } }
 
   @media (max-width: 860px) {
-    .post-featured { grid-template-columns: 1fr; }
-    .post-featured-img { min-height: 260px; }
-    .post-featured-img::after { background: linear-gradient(180deg, transparent 55%, var(--cream) 100%); }
-    .post-featured-body { padding: 1.8rem 1.5rem; border-left: none; border-top: 1px solid var(--rule); }
+    .post-card { grid-template-columns: 1fr; }
+    .post-card-img { min-height: 240px; }
+    .post-card-img::after { background: linear-gradient(180deg, transparent 55%, var(--cream) 100%); }
+    .post-card-body { padding: 1.8rem 1.5rem; border-left: none; border-top: 1px solid var(--rule); }
     .section-mast-inner { flex-direction: column; gap: .5rem; }
     .section-desc { text-align: left; }
     header { flex-wrap: wrap; gap: 1rem; justify-content: center; }
@@ -313,51 +237,57 @@
 
 <main class="page">
 
-  <!-- FEATURED — most recent post -->
-  <a class="post-featured" href="delimitation.html">
-    <div class="post-featured-img">
+  <!-- POST 1 — most recent -->
+  <a class="post-card" href="delimitation.html">
+    <div class="post-card-img">
       <img src="parliament.jpg" alt="The Lok Sabha chamber, new Parliament of India">
     </div>
-    <div class="post-featured-body">
-      <div class="post-label">Latest</div>
-      <div class="post-featured-title">Delimitation Math</div>
-      <div class="post-rule"></div>
-      <p class="post-featured-snippet">
+    <div class="post-card-body">
+      <div class="post-card-label">Latest</div>
+      <div class="post-card-title">Delimitation Math</div>
+      <div class="post-card-rule"></div>
+      <p class="post-card-snippet">
         Who gains and who loses when Parliament grows to 850 seats — and why the timing may have less to do with representation than with arithmetic of a different kind.
       </p>
-      <p class="post-meta">
+      <p class="post-card-meta">
         <span>April 27, 2026</span>
         <span>Policy</span>
         <span>10 min read</span>
       </p>
       <span class="post-cta">
         Read Essay
-        <svg width="14" height="10" viewBox="0 0 14 10" fill="none"
-             stroke="currentColor" stroke-width="1.5">
+        <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M1 5h12M8 1l4 4-4 4"/>
         </svg>
       </span>
     </div>
   </a>
 
-  <!-- SECONDARY POSTS -->
-  <div class="posts-grid">
-
-    <a class="post-card" href="en-route-to-bohemia.html">
-      <div class="post-card-img">
-        <img src="kolkata-tram.jpg" alt="A Kolkata tram">
-      </div>
-      <div class="post-card-body">
-        <div class="post-card-label">On Second Thought</div>
-        <div class="post-card-title">En Route to Bohemia</div>
-        <p class="post-card-snippet">
-          The melancholy of leaving Kolkata, the impossibility of nostalgia, and a city that never melts into a pot — but lays a table with an Indian thali of infinite richness.
-        </p>
-        <div class="post-card-meta">January 10, 2018 &nbsp;·&nbsp; 5 min read</div>
-      </div>
-    </a>
-
-  </div>
+  <!-- POST 2 -->
+  <a class="post-card" href="en-route-to-bohemia.html">
+    <div class="post-card-img">
+      <img src="kolkata-tram.jpg" alt="A Kolkata tram">
+    </div>
+    <div class="post-card-body">
+      <div class="post-card-label">On Second Thought</div>
+      <div class="post-card-title">En Route to Bohemia</div>
+      <div class="post-card-rule"></div>
+      <p class="post-card-snippet">
+        The melancholy of leaving Kolkata, the impossibility of nostalgia, and a city that never melts into a pot — but lays a table with an Indian thali of infinite richness.
+      </p>
+      <p class="post-card-meta">
+        <span>January 10, 2018</span>
+        <span>Memoir</span>
+        <span>5 min read</span>
+      </p>
+      <span class="post-cta">
+        Read Essay
+        <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M1 5h12M8 1l4 4-4 4"/>
+        </svg>
+      </span>
+    </div>
+  </a>
 
 </main>
 
