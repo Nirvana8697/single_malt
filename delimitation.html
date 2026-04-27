@@ -97,23 +97,85 @@
     z-index: 2;
   }
 
-  /* ── INLINE MAP FIGURES ── */
+  /* ── INLINE MAP FIGURES — full-bleed breakout ── */
   .map-figure {
-    margin: 2.8rem 0;
-    border: 1px solid var(--rule);
+    /* Break out of the 760px essay column */
+    position: relative;
+    left: 50%;
+    right: 50%;
+    width: 100vw;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    cursor: zoom-in;
     overflow: hidden;
+    transition: border-color .25s;
   }
+  .map-figure:hover { border-color: var(--amber); }
   .map-figure img {
     width: 100%; display: block;
+    transition: transform .4s ease;
+  }
+  .map-figure:hover img { transform: scale(1.01); }
+
+  .map-figure-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .6rem 1.2rem .65rem;
+    background: var(--parchment);
+    border-top: 1px solid var(--rule);
   }
   .map-figure figcaption {
     font-family: 'Cormorant Garamond', serif;
-    font-style: italic; font-size: .85rem;
+    font-style: italic; font-size: .88rem;
     color: var(--muted); line-height: 1.5;
-    padding: .65rem .9rem .7rem;
-    border-top: 1px solid var(--rule);
-    background: var(--parchment);
   }
+  .map-enlarge-hint {
+    font-family: 'Inconsolata', monospace;
+    font-size: .55rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--amber); white-space: nowrap;
+    display: flex; align-items: center; gap: .4rem; flex-shrink: 0;
+  }
+  .map-enlarge-hint svg { opacity: .7; }
+
+  /* ── LIGHTBOX ── */
+  #lightbox {
+    display: none; position: fixed; inset: 0; z-index: 9000;
+    background: rgba(10,7,3,.96);
+    align-items: center; justify-content: center;
+    cursor: zoom-out;
+  }
+  #lightbox.open { display: flex; }
+  #lb-img {
+    max-width: 96vw; max-height: 92vh;
+    object-fit: contain; display: block;
+    box-shadow: 0 30px 100px rgba(0,0,0,.7); cursor: default;
+  }
+  #lb-caption {
+    position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+    font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: .95rem;
+    color: rgba(240,232,216,.5); pointer-events: none;
+    white-space: nowrap;
+  }
+  #lb-close {
+    position: absolute; top: 1.5rem; right: 2rem;
+    font-family: 'Inconsolata', monospace;
+    font-size: .62rem; letter-spacing: .2em; text-transform: uppercase;
+    color: rgba(240,232,216,.4); cursor: pointer;
+    background: none; border: none; transition: color .2s;
+  }
+  #lb-close:hover { color: white; }
+  .lb-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer;
+    color: rgba(240,232,216,.25); font-size: 2.2rem;
+    padding: 1rem 1.5rem; transition: color .2s;
+  }
+  .lb-nav:hover { color: rgba(240,232,216,.9); }
+  #lb-prev { left: 0; }
+  #lb-next { right: 0; }
 
   /* ── ESSAY WRAP ── */
   .essay-wrap {
@@ -223,6 +285,14 @@
 
 <div id="bar"></div>
 
+<div id="lightbox" role="dialog" aria-modal="true">
+  <button id="lb-close">✕ &nbsp;Close</button>
+  <button class="lb-nav" id="lb-prev">&#8592;</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-nav" id="lb-next">&#8594;</button>
+  <div id="lb-caption"></div>
+</div>
+
 <header>
   <a class="back-link" href="on-second-thought.html">
     <svg width="14" height="10" viewBox="0 0 14 10" fill="none"
@@ -288,9 +358,19 @@
       </div>
     </div>
 
-    <figure class="map-figure">
+    <figure class="map-figure"
+            data-src="delimitation-map-1.png"
+            data-caption="Seat shares — current vs proposed 850-seat allocation">
       <img src="delimitation-map-1.png" alt="Who gains and who loses when Parliament grows to 850 seats">
-      <figcaption>Current seat distribution (543 seats) and the change in each state's share under the proposed 850-seat delimitation, based on 2011 Census population. Blue = state gains; red = state loses.</figcaption>
+      <div class="map-figure-footer">
+        <figcaption>Current seat distribution (543 seats) and the change in each state's share under the proposed 850-seat delimitation, based on 2011 Census population. Blue = state gains; red = state loses.</figcaption>
+        <span class="map-enlarge-hint">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M5 1H1v4M7 11h4V7M1 7v4h4M11 5V1H7"/>
+          </svg>
+          Click to enlarge
+        </span>
+      </div>
     </figure>
 
     <p>It is clear that the South loses representation and the so-called Hindi belt gains. Tamil Nadu loses 1.3 percent and Kerala loses 1 percent of representation while Uttar Pradesh gains the most, proportionally.</p>
@@ -299,9 +379,19 @@
 
     <p>If delimitation is inevitable after the freeze expires, why the hurry? And why club it with the women's reservation bill to create a smoother passage? The following set of maps partially answers this question. The map on the left panel shows the proportion of seats won by the BJP in the 2024 Lok Sabha elections. The saffron-colored states are where the BJP won a majority of the seats. Of course, the Hindi belt contributed the most to the BJP's electoral success, although Uttar Pradesh was a disappointment. Keeping the seat-proportions won across states and UTs fixed, the map on the right panel shows the additional seats that the BJP could win if the currently proposed delimitation were to happen, based on the 2011 census. While the party won 44.2% of the seats in 2024, a Hindi-belt biased delimitation, and similar electoral performance would bring the seat share to 45.3%.</p>
 
-    <figure class="map-figure">
+    <figure class="map-figure"
+            data-src="delimitation-map-2.png"
+            data-caption="BJP seat gains — 240/543 (44.2%) → 385/850 (45.3%)">
       <img src="delimitation-map-2.png" alt="BJP is the structural beneficiary of a population-weighted delimitation">
-      <figcaption>2024 Lok Sabha results by state, and the additional seats BJP could gain by applying current state-wise win rates to the proposed 850-seat allocation. 240/543 (44.2%) → 385/850 (45.3%).</figcaption>
+      <div class="map-figure-footer">
+        <figcaption>2024 Lok Sabha results by state, and the additional seats BJP could gain applying current win rates to the proposed 850-seat allocation. 240/543 (44.2%) → 385/850 (45.3%).</figcaption>
+        <span class="map-enlarge-hint">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M5 1H1v4M7 11h4V7M1 7v4h4M11 5V1H7"/>
+          </svg>
+          Click to enlarge
+        </span>
+      </div>
     </figure>
 
     <p>As I mentioned, this is only a partial answer because electoral gain would be marginal. Of course, the chances of electoral loss for the incumbent are non-existent if the delimitation bill had passed the Lok Sabha successfully. It would be a fool-proof answer if Uttar Pradesh is expected to flip in 2029 in favor of the BJP, and is part of the ruling party's calculations.</p>
@@ -320,9 +410,47 @@
 </footer>
 
 <script>
+  // Scroll progress
   window.addEventListener('scroll', () => {
     const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
     document.getElementById('bar').style.width = pct + '%';
+  });
+
+  // Lightbox
+  const maps = [];
+  document.querySelectorAll('figure.map-figure').forEach((fig, i) => {
+    maps.push({ src: fig.dataset.src, caption: fig.dataset.caption });
+    fig.addEventListener('click', () => openLb(i));
+  });
+
+  const lb    = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lb-img');
+  const lbCap = document.getElementById('lb-caption');
+  let cur = 0;
+
+  function openLb(i) {
+    cur = i; show();
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLb() {
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function show() {
+    lbImg.src = maps[cur].src;
+    lbCap.textContent = maps[cur].caption;
+  }
+
+  document.getElementById('lb-close').addEventListener('click', closeLb);
+  document.getElementById('lb-prev').addEventListener('click', e => { e.stopPropagation(); cur = (cur - 1 + maps.length) % maps.length; show(); });
+  document.getElementById('lb-next').addEventListener('click', e => { e.stopPropagation(); cur = (cur + 1) % maps.length; show(); });
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLb();
+    if (e.key === 'ArrowLeft') { cur = (cur - 1 + maps.length) % maps.length; show(); }
+    if (e.key === 'ArrowRight') { cur = (cur + 1) % maps.length; show(); }
   });
 </script>
 </body>
