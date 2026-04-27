@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Song of the Little Road — single malt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inconsolata:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:         #1a1208;
+    --parchment:   #f5efe4;
+    --warm-mid:    #ede3d2;
+    --amber:       #b5732a;
+    --amber-light: #d4924a;
+    --muted:       #8a7a65;
+    --rule:        #c9b99a;
+    --cream:       #faf6ef;
+    --c-route:     #9c4a2a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 999; opacity: .45;
+  }
+
+  #bar {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: linear-gradient(90deg, var(--c-route), var(--amber));
+    z-index: 1000; width: 0; transition: width .08s linear;
+  }
+
+  /* ── HEADER ── */
+  header {
+    border-bottom: 1px solid var(--rule);
+    padding: 1.5rem clamp(1.5rem,6vw,5rem);
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--cream);
+  }
+  .back-link {
+    font-family: 'Inconsolata', monospace;
+    font-size: .62rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none;
+    display: inline-flex; align-items: center; gap: .5rem;
+    transition: color .2s;
+  }
+  .back-link:hover { color: var(--amber); }
+  .back-link svg { transition: transform .2s; }
+  .back-link:hover svg { transform: translateX(-3px); }
+  .site-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 900; letter-spacing: -.02em;
+    color: var(--ink); text-decoration: none;
+  }
+  .site-name em { font-style: normal; color: var(--amber); }
+
+  /* ── SECTION MASTHEAD ── */
+  .section-mast {
+    padding: clamp(2.5rem,5vw,4rem) clamp(1.5rem,6vw,5rem);
+    border-bottom: 1px solid var(--rule);
+    background: var(--parchment);
+    position: relative;
+  }
+  .section-mast::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--c-route), transparent 60%);
+  }
+  .section-mast-inner {
+    max-width: 1260px; margin: 0 auto;
+    display: flex; align-items: baseline;
+    justify-content: space-between; gap: 2rem;
+  }
+  .section-eyebrow {
+    font-family: 'Inconsolata', monospace;
+    font-size: .6rem; letter-spacing: .25em; text-transform: uppercase;
+    color: var(--c-route); margin-bottom: .6rem;
+    display: flex; align-items: center; gap: .6rem;
+  }
+  .section-eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--c-route); }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem,4vw,3rem); font-weight: 900; color: var(--ink);
+  }
+  .section-desc {
+    font-style: italic; font-size: .95rem; color: var(--muted);
+    max-width: 400px; text-align: right;
+  }
+
+  /* ── PAGE BODY ── */
+  .page { max-width: 1260px; margin: 0 auto; padding: clamp(2rem,5vw,4rem) clamp(1.5rem,5vw,4rem) 6rem; }
+
+  /* ── FEATURED POST ── */
+  .post-featured {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid var(--rule);
+    overflow: hidden;
+    margin-bottom: 3rem;
+    text-decoration: none;
+    color: inherit;
+    opacity: 0; animation: up .9s ease .1s forwards;
+    transition: border-color .25s;
+  }
+  .post-featured:hover { border-color: var(--amber); }
+
+  .post-featured-img {
+    position: relative; overflow: hidden; min-height: 420px;
+  }
+  .post-featured-img img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    filter: sepia(15%) contrast(1.05) brightness(.9);
+    transition: transform .7s ease, filter .4s;
+  }
+  .post-featured:hover .post-featured-img img {
+    transform: scale(1.04);
+    filter: sepia(5%) contrast(1.08) brightness(.95);
+  }
+  .post-featured-img::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent 60%, var(--cream) 100%);
+  }
+
+  .post-featured-body {
+    padding: 3rem 2.5rem 3rem 2rem;
+    display: flex; flex-direction: column; justify-content: center;
+    background: var(--cream);
+    border-left: 1px solid var(--rule);
+  }
+
+  .post-label {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font-family: 'Inconsolata', monospace;
+    font-size: .58rem; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--c-route); margin-bottom: 1rem;
+  }
+  .post-label::before { content: ''; width: 18px; height: 1px; background: var(--c-route); }
+
+  .post-featured-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem,2.8vw,2.6rem); font-weight: 900;
+    line-height: 1.1; color: var(--ink); margin-bottom: 1rem;
+    transition: color .2s;
+  }
+  .post-featured:hover .post-featured-title { color: var(--amber); }
+
+  .post-rule { width: 32px; height: 1px; background: var(--rule); margin-bottom: 1rem; }
+
+  .post-featured-snippet {
+    font-size: .97rem; font-style: italic; font-weight: 300;
+    color: #4a3c2a; line-height: 1.8;
+    border-left: 2px solid var(--amber-light);
+    padding-left: 1rem; margin-bottom: 1.5rem;
+  }
+
+  .post-meta {
+    font-family: 'Inconsolata', monospace;
+    font-size: .6rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 1.5rem;
+  }
+  .post-meta span + span::before { content: ' · '; }
+
+  .post-cta {
+    display: inline-flex; align-items: center; gap: .55rem;
+    font-family: 'Inconsolata', monospace;
+    font-size: .65rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--ink);
+    border-bottom: 1px solid var(--ink); padding-bottom: 2px;
+    width: fit-content; transition: color .2s, border-color .2s;
+  }
+  .post-featured:hover .post-cta { color: var(--amber); border-color: var(--amber); }
+  .post-cta svg { transition: transform .2s; }
+  .post-featured:hover .post-cta svg { transform: translateX(4px); }
+
+  /* ── SECONDARY POSTS GRID ── */
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .post-card {
+    border: 1px solid var(--rule);
+    overflow: hidden;
+    text-decoration: none; color: inherit;
+    display: flex; flex-direction: column;
+    opacity: 0; animation: up .7s ease forwards;
+    transition: border-color .25s;
+    background: var(--cream);
+  }
+  .post-card:hover { border-color: var(--amber); }
+  .post-card:nth-child(1) { animation-delay: .3s; }
+  .post-card:nth-child(2) { animation-delay: .4s; }
+
+  .post-card-img {
+    position: relative; overflow: hidden; height: 220px;
+  }
+  .post-card-img img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    filter: sepia(20%) contrast(1.05) brightness(.9);
+    transition: transform .6s ease, filter .4s;
+  }
+  .post-card:hover .post-card-img img {
+    transform: scale(1.05); filter: sepia(5%) contrast(1.08);
+  }
+  .post-card-img::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 50%, var(--cream) 100%);
+  }
+
+  .post-card-body {
+    padding: 1.5rem 1.5rem 2rem;
+    display: flex; flex-direction: column; flex: 1;
+  }
+  .post-card-label {
+    font-family: 'Inconsolata', monospace;
+    font-size: .56rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--c-route); margin-bottom: .6rem;
+  }
+  .post-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem; font-weight: 700; line-height: 1.2;
+    color: var(--ink); margin-bottom: .6rem; transition: color .2s;
+  }
+  .post-card:hover .post-card-title { color: var(--amber); }
+  .post-card-snippet {
+    font-size: .88rem; font-style: italic; color: var(--muted);
+    line-height: 1.65; margin-bottom: 1rem; flex: 1;
+  }
+  .post-card-meta {
+    font-family: 'Inconsolata', monospace;
+    font-size: .58rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--rule); display: flex; align-items: center; gap: .5rem;
+  }
+  .post-card-meta::before {
+    content: ''; flex: none; width: 16px; height: 1px; background: var(--rule);
+    transition: width .2s, background .2s;
+  }
+  .post-card:hover .post-card-meta::before { width: 28px; background: var(--amber); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--rule); background: var(--parchment);
+    padding: 2rem clamp(1.5rem,5vw,4rem);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; font-weight: 900; color: var(--ink); text-decoration: none;
+  }
+  .footer-brand span { color: var(--amber); }
+  .footer-copy {
+    font-family: 'Inconsolata', monospace;
+    font-size: .57rem; letter-spacing: .12em; color: var(--muted); text-transform: uppercase;
+  }
+
+  @keyframes up { to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 860px) {
+    .post-featured { grid-template-columns: 1fr; }
+    .post-featured-img { min-height: 260px; }
+    .post-featured-img::after { background: linear-gradient(180deg, transparent 55%, var(--cream) 100%); }
+    .post-featured-body { padding: 1.8rem 1.5rem; border-left: none; border-top: 1px solid var(--rule); }
+    .section-mast-inner { flex-direction: column; gap: .5rem; }
+    .section-desc { text-align: left; }
+    header { flex-wrap: wrap; gap: 1rem; justify-content: center; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div id="bar"></div>
+
+<header>
+  <a class="back-link" href="index.html">
+    <svg width="14" height="10" viewBox="0 0 14 10" fill="none"
+         stroke="currentColor" stroke-width="1.5">
+      <path d="M13 5H1M6 1L2 5l4 4"/>
+    </svg>
+    single malt
+  </a>
+  <a class="site-name" href="index.html">single&nbsp;<em>malt</em></a>
+  <div style="width:80px"></div>
+</header>
+
+<div class="section-mast">
+  <div class="section-mast-inner">
+    <div>
+      <div class="section-eyebrow">Travelogue</div>
+      <h1 class="section-title">Song of the Little Road</h1>
+    </div>
+    <p class="section-desc">Dispatches from elsewhere — places that stay with you long after you've left.</p>
+  </div>
+</div>
+
+<main class="page">
+
+  <!-- FEATURED — most recent post -->
+  <a class="post-featured" href="morocco.html">
+    <div class="post-featured-img">
+      <img src="morocco-sahara-1.jpg" alt="Camel riders on the Sahara dunes at sunset">
+    </div>
+    <div class="post-featured-body">
+      <div class="post-label">Latest</div>
+      <div class="post-featured-title">Morocco — A Happy Haze</div>
+      <div class="post-rule"></div>
+      <p class="post-featured-snippet">
+        A honeymoon impulse, a skull-cap of Africa, Bogart's Casablanca, the blue city, and the Sahara at dusk — orange, as it turns out.
+      </p>
+      <p class="post-meta">
+        <span>April 12, 2026</span>
+        <span>Travelogue</span>
+        <span>15 min read</span>
+      </p>
+      <span class="post-cta">
+        Read Essay
+        <svg width="14" height="10" viewBox="0 0 14 10" fill="none"
+             stroke="currentColor" stroke-width="1.5">
+          <path d="M1 5h12M8 1l4 4-4 4"/>
+        </svg>
+      </span>
+    </div>
+  </a>
+
+</main>
+
+<footer>
+  <a class="footer-brand" href="index.html">single <span>malt</span></a>
+  <div class="footer-copy">© 2018 – 2026 &nbsp;·&nbsp; All rights reserved</div>
+</footer>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    document.getElementById('bar').style.width = pct + '%';
+  });
+</script>
+</body>
+</html>
