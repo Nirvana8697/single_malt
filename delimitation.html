@@ -97,19 +97,15 @@
     z-index: 2;
   }
 
-  /* ── INLINE MAP FIGURES — full-bleed breakout ── */
+  /* ── INLINE MAP FIGURES — modest breakout ── */
   .map-figure {
-    /* Break out of the 760px essay column */
     position: relative;
     left: 50%;
-    right: 50%;
-    width: 100vw;
-    margin-left: -50vw;
-    margin-right: -50vw;
+    width: min(960px, 92vw);
+    transform: translateX(-50%);
     margin-top: 3rem;
     margin-bottom: 3rem;
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
+    border: 1px solid var(--rule);
     cursor: zoom-in;
     overflow: hidden;
     transition: border-color .25s;
