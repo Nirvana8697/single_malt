@@ -61,7 +61,6 @@
   .back-link:hover { color: var(--amber); }
   .back-link svg { transition: transform .2s; }
   .back-link:hover svg { transform: translateX(-3px); }
-
   .site-name {
     font-family: 'Playfair Display', serif;
     font-size: 1.8rem; font-weight: 900; letter-spacing: -.02em;
@@ -69,100 +68,192 @@
   }
   .site-name em { font-style: normal; color: var(--amber); }
 
-  /* ── SECTION TITLE BAND ── */
-  .section-band {
+  /* ── SECTION MASTHEAD ── */
+  .section-mast {
+    padding: clamp(2.5rem,5vw,4rem) clamp(1.5rem,6vw,5rem);
     border-bottom: 1px solid var(--rule);
-    padding: 3rem clamp(1.5rem,6vw,5rem) 2.5rem;
     background: var(--parchment);
     position: relative;
   }
-  .section-band::before {
+  .section-mast::before {
     content: '';
     position: absolute; top: 0; left: 0; right: 0; height: 3px;
     background: linear-gradient(90deg, var(--c-nooks), transparent 60%);
   }
+  .section-mast-inner {
+    max-width: 1260px; margin: 0 auto;
+    display: flex; align-items: baseline;
+    justify-content: space-between; gap: 2rem;
+  }
   .section-eyebrow {
     font-family: 'Inconsolata', monospace;
     font-size: .6rem; letter-spacing: .25em; text-transform: uppercase;
-    color: var(--c-nooks); margin-bottom: .8rem;
-    display: flex; align-items: center; gap: .7rem;
+    color: var(--c-nooks); margin-bottom: .6rem;
+    display: flex; align-items: center; gap: .6rem;
   }
   .section-eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--c-nooks); }
   .section-title {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem,5vw,3.5rem); font-weight: 900;
-    line-height: 1.1; color: var(--ink); margin-bottom: .6rem;
+    font-size: clamp(2rem,4vw,3rem); font-weight: 900; color: var(--ink);
   }
   .section-desc {
-    font-style: italic; font-size: 1rem; color: var(--muted);
+    font-style: italic; font-size: .95rem; color: var(--muted);
+    max-width: 400px; text-align: right;
   }
 
-  /* ── POST LIST ── */
-  .post-list {
-    max-width: 860px; margin: 0 auto;
-    padding: 3rem clamp(1.5rem,5vw,3rem) 6rem;
-  }
+  /* ── PAGE BODY ── */
+  .page { max-width: 1260px; margin: 0 auto; padding: clamp(2rem,5vw,4rem) clamp(1.5rem,5vw,4rem) 6rem; }
 
-  .post-entry {
+  /* ── FEATURED POST (first/latest) ── */
+  .post-featured {
     display: grid;
-    grid-template-columns: 160px 1fr;
-    gap: 0;
-    border-bottom: 1px solid var(--rule);
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid var(--rule);
+    overflow: hidden;
+    margin-bottom: 3rem;
     text-decoration: none;
     color: inherit;
-    transition: background .2s;
-    opacity: 0;
-    animation: up .6s ease forwards;
+    opacity: 0; animation: up .9s ease .1s forwards;
+    transition: border-color .25s;
   }
-  .post-entry:first-child { border-top: 1px solid var(--rule); }
-  .post-entry:nth-child(1) { animation-delay: .1s; }
-  .post-entry:nth-child(2) { animation-delay: .2s; }
-  .post-entry:nth-child(3) { animation-delay: .3s; }
-  .post-entry:hover { background: var(--warm-mid); }
+  .post-featured:hover { border-color: var(--amber); }
 
-  .post-entry-date {
-    padding: 2rem 1.5rem 2rem 0;
-    border-right: 1px solid var(--rule);
-    display: flex; flex-direction: column; gap: .3rem;
+  .post-featured-img {
+    position: relative; overflow: hidden; min-height: 420px;
   }
-  .post-date-day {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.2rem; font-weight: 900; line-height: 1;
-    color: var(--amber);
+  .post-featured-img img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    filter: sepia(20%) contrast(1.05) brightness(.9);
+    transition: transform .7s ease, filter .4s;
   }
-  .post-date-month {
+  .post-featured:hover .post-featured-img img {
+    transform: scale(1.04);
+    filter: sepia(5%) contrast(1.08) brightness(.95);
+  }
+  .post-featured-img::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent 60%, var(--cream) 100%);
+  }
+
+  .post-featured-body {
+    padding: 3rem 2.5rem 3rem 2rem;
+    display: flex; flex-direction: column; justify-content: center;
+    background: var(--cream);
+    border-left: 1px solid var(--rule);
+  }
+
+  .post-label {
+    display: inline-flex; align-items: center; gap: .5rem;
     font-family: 'Inconsolata', monospace;
-    font-size: .6rem; letter-spacing: .18em; text-transform: uppercase;
-    color: var(--muted);
+    font-size: .58rem; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--c-nooks); margin-bottom: 1rem;
   }
+  .post-label::before { content: ''; width: 18px; height: 1px; background: var(--c-nooks); }
 
-  .post-entry-body {
-    padding: 2rem 0 2rem 2rem;
-  }
-  .post-entry-title {
+  .post-featured-title {
     font-family: 'Playfair Display', serif;
-    font-size: 1.4rem; font-weight: 700; line-height: 1.2;
-    color: var(--ink); margin-bottom: .5rem;
+    font-size: clamp(1.6rem,2.8vw,2.6rem); font-weight: 900;
+    line-height: 1.1; color: var(--ink); margin-bottom: 1rem;
     transition: color .2s;
   }
-  .post-entry:hover .post-entry-title { color: var(--amber); }
-  .post-entry-snippet {
-    font-size: .92rem; font-style: italic;
-    color: var(--muted); line-height: 1.65; margin-bottom: .7rem;
+  .post-featured:hover .post-featured-title { color: var(--amber); }
+
+  .post-rule { width: 32px; height: 1px; background: var(--rule); margin-bottom: 1rem; }
+
+  .post-featured-snippet {
+    font-size: .97rem; font-style: italic; font-weight: 300;
+    color: #4a3c2a; line-height: 1.8;
+    border-left: 2px solid var(--amber-light);
+    padding-left: 1rem; margin-bottom: 1.5rem;
   }
-  .post-entry-meta {
+
+  .post-meta {
     font-family: 'Inconsolata', monospace;
-    font-size: .58rem; letter-spacing: .14em; text-transform: uppercase;
+    font-size: .6rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 1.5rem;
+  }
+  .post-meta span + span::before { content: ' · '; }
+
+  .post-cta {
+    display: inline-flex; align-items: center; gap: .55rem;
+    font-family: 'Inconsolata', monospace;
+    font-size: .65rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--ink);
+    border-bottom: 1px solid var(--ink); padding-bottom: 2px;
+    width: fit-content; transition: color .2s, border-color .2s;
+  }
+  .post-featured:hover .post-cta { color: var(--amber); border-color: var(--amber); }
+  .post-cta svg { transition: transform .2s; }
+  .post-featured:hover .post-cta svg { transform: translateX(4px); }
+
+  /* ── SECONDARY POSTS GRID ── */
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .post-card {
+    border: 1px solid var(--rule);
+    overflow: hidden;
+    text-decoration: none; color: inherit;
+    display: flex; flex-direction: column;
+    opacity: 0; animation: up .7s ease forwards;
+    transition: border-color .25s;
+    background: var(--cream);
+  }
+  .post-card:hover { border-color: var(--amber); }
+  .post-card:nth-child(1) { animation-delay: .3s; }
+  .post-card:nth-child(2) { animation-delay: .4s; }
+
+  .post-card-img {
+    position: relative; overflow: hidden; height: 220px;
+  }
+  .post-card-img img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    filter: sepia(20%) contrast(1.05) brightness(.9);
+    transition: transform .6s ease, filter .4s;
+  }
+  .post-card:hover .post-card-img img {
+    transform: scale(1.05);
+    filter: sepia(5%) contrast(1.08);
+  }
+  .post-card-img::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 50%, var(--cream) 100%);
+  }
+
+  .post-card-body {
+    padding: 1.5rem 1.5rem 2rem;
+    display: flex; flex-direction: column; flex: 1;
+  }
+  .post-card-label {
+    font-family: 'Inconsolata', monospace;
+    font-size: .56rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--c-nooks); margin-bottom: .6rem;
+  }
+  .post-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem; font-weight: 700; line-height: 1.2;
+    color: var(--ink); margin-bottom: .6rem;
+    transition: color .2s;
+  }
+  .post-card:hover .post-card-title { color: var(--amber); }
+  .post-card-snippet {
+    font-size: .88rem; font-style: italic; color: var(--muted);
+    line-height: 1.65; margin-bottom: 1rem; flex: 1;
+  }
+  .post-card-meta {
+    font-family: 'Inconsolata', monospace;
+    font-size: .58rem; letter-spacing: .12em; text-transform: uppercase;
     color: var(--rule);
+    display: flex; align-items: center; gap: .5rem;
   }
-  .post-entry-arrow {
-    display: inline-flex; align-items: center; gap: .4rem;
-    font-family: 'Inconsolata', monospace;
-    font-size: .6rem; letter-spacing: .15em; text-transform: uppercase;
-    color: var(--amber); margin-top: .8rem;
-    opacity: 0; transition: opacity .2s;
+  .post-card-meta::before {
+    content: ''; flex: none; width: 16px; height: 1px; background: var(--rule);
+    transition: width .2s, background .2s;
   }
-  .post-entry:hover .post-entry-arrow { opacity: 1; }
+  .post-card:hover .post-card-meta::before { width: 28px; background: var(--amber); }
 
   /* ── FOOTER ── */
   footer {
@@ -182,11 +273,14 @@
 
   @keyframes up { to { opacity: 1; transform: translateY(0); } }
 
-  @media (max-width: 640px) {
+  @media (max-width: 860px) {
+    .post-featured { grid-template-columns: 1fr; }
+    .post-featured-img { min-height: 260px; }
+    .post-featured-img::after { background: linear-gradient(180deg, transparent 55%, var(--cream) 100%); }
+    .post-featured-body { padding: 1.8rem 1.5rem; border-left: none; border-top: 1px solid var(--rule); }
+    .section-mast-inner { flex-direction: column; gap: .5rem; }
+    .section-desc { text-align: left; }
     header { flex-wrap: wrap; gap: 1rem; justify-content: center; }
-    .post-entry { grid-template-columns: 1fr; }
-    .post-entry-date { border-right: none; border-bottom: 1px solid var(--rule); padding: 1.2rem 0 .8rem; }
-    .post-entry-body { padding: 1rem 0 1.5rem; }
     footer { flex-direction: column; gap: 1rem; text-align: center; }
   }
 </style>
@@ -207,56 +301,63 @@
   <div style="width:80px"></div>
 </header>
 
-<div class="section-band">
-  <div class="section-eyebrow">Reflections</div>
-  <h1 class="section-title">On Second Thought</h1>
-  <p class="section-desc">Notes on cities, memory, and everything in between.</p>
+<div class="section-mast">
+  <div class="section-mast-inner">
+    <div>
+      <div class="section-eyebrow">Reflections</div>
+      <h1 class="section-title">On Second Thought</h1>
+    </div>
+    <p class="section-desc">Notes on cities, memory, democracy, and everything in between.</p>
+  </div>
 </div>
 
-<main class="post-list">
+<main class="page">
 
-  <!-- MOST RECENT FIRST -->
-  <a class="post-entry" href="delimitation.html">
-    <div class="post-entry-date">
-      <div class="post-date-day">27</div>
-      <div class="post-date-month">Apr 2026</div>
+  <!-- FEATURED — most recent post -->
+  <a class="post-featured" href="delimitation.html">
+    <div class="post-featured-img">
+      <img src="parliament.jpg" alt="The Lok Sabha chamber, new Parliament of India">
     </div>
-    <div class="post-entry-body">
-      <div class="post-entry-title">Delimitation Math</div>
-      <p class="post-entry-snippet">
+    <div class="post-featured-body">
+      <div class="post-label">Latest</div>
+      <div class="post-featured-title">Delimitation Math</div>
+      <div class="post-rule"></div>
+      <p class="post-featured-snippet">
         Who gains and who loses when Parliament grows to 850 seats — and why the timing may have less to do with representation than with arithmetic of a different kind.
       </p>
-      <div class="post-entry-meta">Economics · Policy · 10 min read</div>
-      <div class="post-entry-arrow">
+      <p class="post-meta">
+        <span>April 27, 2026</span>
+        <span>Policy</span>
+        <span>10 min read</span>
+      </p>
+      <span class="post-cta">
         Read Essay
-        <svg width="12" height="9" viewBox="0 0 14 10" fill="none"
+        <svg width="14" height="10" viewBox="0 0 14 10" fill="none"
              stroke="currentColor" stroke-width="1.5">
           <path d="M1 5h12M8 1l4 4-4 4"/>
         </svg>
-      </div>
+      </span>
     </div>
   </a>
 
-  <a class="post-entry" href="en-route-to-bohemia.html">
-    <div class="post-entry-date">
-      <div class="post-date-day">10</div>
-      <div class="post-date-month">Jan 2018</div>
-    </div>
-    <div class="post-entry-body">
-      <div class="post-entry-title">En Route to Bohemia</div>
-      <p class="post-entry-snippet">
-        The melancholy of leaving Kolkata, the impossibility of nostalgia, and a city that never melts into a pot — but lays a table with an Indian thali of infinite richness.
-      </p>
-      <div class="post-entry-meta">Memoir · 5 min read</div>
-      <div class="post-entry-arrow">
-        Read Essay
-        <svg width="12" height="9" viewBox="0 0 14 10" fill="none"
-             stroke="currentColor" stroke-width="1.5">
-          <path d="M1 5h12M8 1l4 4-4 4"/>
-        </svg>
+  <!-- SECONDARY POSTS -->
+  <div class="posts-grid">
+
+    <a class="post-card" href="en-route-to-bohemia.html">
+      <div class="post-card-img">
+        <img src="kolkata-tram.jpg" alt="A Kolkata tram">
       </div>
-    </div>
-  </a>
+      <div class="post-card-body">
+        <div class="post-card-label">On Second Thought</div>
+        <div class="post-card-title">En Route to Bohemia</div>
+        <p class="post-card-snippet">
+          The melancholy of leaving Kolkata, the impossibility of nostalgia, and a city that never melts into a pot — but lays a table with an Indian thali of infinite richness.
+        </p>
+        <div class="post-card-meta">January 10, 2018 &nbsp;·&nbsp; 5 min read</div>
+      </div>
+    </a>
+
+  </div>
 
 </main>
 
