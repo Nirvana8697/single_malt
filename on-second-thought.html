@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>On Second Thought — single malt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inconsolata:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:         #1a1208;
+    --parchment:   #f5efe4;
+    --warm-mid:    #ede3d2;
+    --amber:       #b5732a;
+    --amber-light: #d4924a;
+    --muted:       #8a7a65;
+    --rule:        #c9b99a;
+    --cream:       #faf6ef;
+    --c-nooks:     #b5732a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 999; opacity: .45;
+  }
+
+  #bar {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: linear-gradient(90deg, var(--amber), var(--amber-light));
+    z-index: 1000; width: 0; transition: width .08s linear;
+  }
+
+  /* ── HEADER ── */
+  header {
+    border-bottom: 1px solid var(--rule);
+    padding: 1.5rem clamp(1.5rem,6vw,5rem);
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--cream);
+  }
+  .back-link {
+    font-family: 'Inconsolata', monospace;
+    font-size: .62rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none;
+    display: inline-flex; align-items: center; gap: .5rem;
+    transition: color .2s;
+  }
+  .back-link:hover { color: var(--amber); }
+  .back-link svg { transition: transform .2s; }
+  .back-link:hover svg { transform: translateX(-3px); }
+
+  .site-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 900; letter-spacing: -.02em;
+    color: var(--ink); text-decoration: none;
+  }
+  .site-name em { font-style: normal; color: var(--amber); }
+
+  /* ── SECTION TITLE BAND ── */
+  .section-band {
+    border-bottom: 1px solid var(--rule);
+    padding: 3rem clamp(1.5rem,6vw,5rem) 2.5rem;
+    background: var(--parchment);
+    position: relative;
+  }
+  .section-band::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--c-nooks), transparent 60%);
+  }
+  .section-eyebrow {
+    font-family: 'Inconsolata', monospace;
+    font-size: .6rem; letter-spacing: .25em; text-transform: uppercase;
+    color: var(--c-nooks); margin-bottom: .8rem;
+    display: flex; align-items: center; gap: .7rem;
+  }
+  .section-eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--c-nooks); }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem,5vw,3.5rem); font-weight: 900;
+    line-height: 1.1; color: var(--ink); margin-bottom: .6rem;
+  }
+  .section-desc {
+    font-style: italic; font-size: 1rem; color: var(--muted);
+  }
+
+  /* ── POST LIST ── */
+  .post-list {
+    max-width: 860px; margin: 0 auto;
+    padding: 3rem clamp(1.5rem,5vw,3rem) 6rem;
+  }
+
+  .post-entry {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--rule);
+    text-decoration: none;
+    color: inherit;
+    transition: background .2s;
+    opacity: 0;
+    animation: up .6s ease forwards;
+  }
+  .post-entry:first-child { border-top: 1px solid var(--rule); }
+  .post-entry:nth-child(1) { animation-delay: .1s; }
+  .post-entry:nth-child(2) { animation-delay: .2s; }
+  .post-entry:nth-child(3) { animation-delay: .3s; }
+  .post-entry:hover { background: var(--warm-mid); }
+
+  .post-entry-date {
+    padding: 2rem 1.5rem 2rem 0;
+    border-right: 1px solid var(--rule);
+    display: flex; flex-direction: column; gap: .3rem;
+  }
+  .post-date-day {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem; font-weight: 900; line-height: 1;
+    color: var(--amber);
+  }
+  .post-date-month {
+    font-family: 'Inconsolata', monospace;
+    font-size: .6rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .post-entry-body {
+    padding: 2rem 0 2rem 2rem;
+  }
+  .post-entry-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 700; line-height: 1.2;
+    color: var(--ink); margin-bottom: .5rem;
+    transition: color .2s;
+  }
+  .post-entry:hover .post-entry-title { color: var(--amber); }
+  .post-entry-snippet {
+    font-size: .92rem; font-style: italic;
+    color: var(--muted); line-height: 1.65; margin-bottom: .7rem;
+  }
+  .post-entry-meta {
+    font-family: 'Inconsolata', monospace;
+    font-size: .58rem; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--rule);
+  }
+  .post-entry-arrow {
+    display: inline-flex; align-items: center; gap: .4rem;
+    font-family: 'Inconsolata', monospace;
+    font-size: .6rem; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--amber); margin-top: .8rem;
+    opacity: 0; transition: opacity .2s;
+  }
+  .post-entry:hover .post-entry-arrow { opacity: 1; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--rule); background: var(--parchment);
+    padding: 2rem clamp(1.5rem,5vw,4rem);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; font-weight: 900; color: var(--ink); text-decoration: none;
+  }
+  .footer-brand span { color: var(--amber); }
+  .footer-copy {
+    font-family: 'Inconsolata', monospace;
+    font-size: .57rem; letter-spacing: .12em; color: var(--muted); text-transform: uppercase;
+  }
+
+  @keyframes up { to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 640px) {
+    header { flex-wrap: wrap; gap: 1rem; justify-content: center; }
+    .post-entry { grid-template-columns: 1fr; }
+    .post-entry-date { border-right: none; border-bottom: 1px solid var(--rule); padding: 1.2rem 0 .8rem; }
+    .post-entry-body { padding: 1rem 0 1.5rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div id="bar"></div>
+
+<header>
+  <a class="back-link" href="index.html">
+    <svg width="14" height="10" viewBox="0 0 14 10" fill="none"
+         stroke="currentColor" stroke-width="1.5">
+      <path d="M13 5H1M6 1L2 5l4 4"/>
+    </svg>
+    single malt
+  </a>
+  <a class="site-name" href="index.html">single&nbsp;<em>malt</em></a>
+  <div style="width:80px"></div>
+</header>
+
+<div class="section-band">
+  <div class="section-eyebrow">Reflections</div>
+  <h1 class="section-title">On Second Thought</h1>
+  <p class="section-desc">Notes on cities, memory, and everything in between.</p>
+</div>
+
+<main class="post-list">
+
+  <!-- MOST RECENT FIRST -->
+  <a class="post-entry" href="delimitation.html">
+    <div class="post-entry-date">
+      <div class="post-date-day">27</div>
+      <div class="post-date-month">Apr 2026</div>
+    </div>
+    <div class="post-entry-body">
+      <div class="post-entry-title">Delimitation Math</div>
+      <p class="post-entry-snippet">
+        Who gains and who loses when Parliament grows to 850 seats — and why the timing may have less to do with representation than with arithmetic of a different kind.
+      </p>
+      <div class="post-entry-meta">Economics · Policy · 10 min read</div>
+      <div class="post-entry-arrow">
+        Read Essay
+        <svg width="12" height="9" viewBox="0 0 14 10" fill="none"
+             stroke="currentColor" stroke-width="1.5">
+          <path d="M1 5h12M8 1l4 4-4 4"/>
+        </svg>
+      </div>
+    </div>
+  </a>
+
+  <a class="post-entry" href="en-route-to-bohemia.html">
+    <div class="post-entry-date">
+      <div class="post-date-day">10</div>
+      <div class="post-date-month">Jan 2018</div>
+    </div>
+    <div class="post-entry-body">
+      <div class="post-entry-title">En Route to Bohemia</div>
+      <p class="post-entry-snippet">
+        The melancholy of leaving Kolkata, the impossibility of nostalgia, and a city that never melts into a pot — but lays a table with an Indian thali of infinite richness.
+      </p>
+      <div class="post-entry-meta">Memoir · 5 min read</div>
+      <div class="post-entry-arrow">
+        Read Essay
+        <svg width="12" height="9" viewBox="0 0 14 10" fill="none"
+             stroke="currentColor" stroke-width="1.5">
+          <path d="M1 5h12M8 1l4 4-4 4"/>
+        </svg>
+      </div>
+    </div>
+  </a>
+
+</main>
+
+<footer>
+  <a class="footer-brand" href="index.html">single <span>malt</span></a>
+  <div class="footer-copy">© 2018 – 2026 &nbsp;·&nbsp; All rights reserved</div>
+</footer>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    document.getElementById('bar').style.width = pct + '%';
+  });
+</script>
+</body>
+</html>
