@@ -75,20 +75,44 @@
     color: var(--c-nooks); text-align: right; line-height: 1.8;
   }
 
-  /* ── HERO ── */
+  /* ── HERO IMAGE ── */
   .essay-hero {
-    width: 100%; max-height: 420px; overflow: hidden; position: relative;
+    width: 100%; max-height: 460px; overflow: hidden; position: relative;
     opacity: 0; animation: up .9s ease .05s forwards;
   }
   .essay-hero img {
     width: 100%; display: block; object-fit: cover;
-    object-position: center top; max-height: 420px;
-    filter: contrast(1.03);
-    transition: transform .6s ease;
+    object-position: center center; max-height: 460px;
+    filter: sepia(15%) contrast(1.05) brightness(.92);
   }
   .essay-hero::after {
     content: ''; position: absolute; inset: 0;
-    background: linear-gradient(180deg, transparent 55%, var(--cream) 100%);
+    background: linear-gradient(180deg, transparent 45%, var(--cream) 100%);
+  }
+  .essay-hero-credit {
+    position: absolute; bottom: .6rem; right: .8rem;
+    font-family: 'Inconsolata', monospace;
+    font-size: .52rem; letter-spacing: .1em;
+    color: rgba(255,255,255,.5);
+    z-index: 2;
+  }
+
+  /* ── INLINE MAP FIGURES ── */
+  .map-figure {
+    margin: 2.8rem 0;
+    border: 1px solid var(--rule);
+    overflow: hidden;
+  }
+  .map-figure img {
+    width: 100%; display: block;
+  }
+  .map-figure figcaption {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: .85rem;
+    color: var(--muted); line-height: 1.5;
+    padding: .65rem .9rem .7rem;
+    border-top: 1px solid var(--rule);
+    background: var(--parchment);
   }
 
   /* ── ESSAY WRAP ── */
@@ -163,58 +187,6 @@
   .formula .den { padding: .2rem .4rem 0; white-space: nowrap; }
   .formula .eq { color: var(--muted); font-size: 1rem; }
 
-  /* ── MAP LINK CARD ── */
-  .map-card {
-    display: flex;
-    align-items: center;
-    gap: 1.4rem;
-    margin: 2.5rem 0;
-    padding: 1.4rem 1.6rem;
-    border: 1px solid var(--rule);
-    background: var(--parchment);
-    text-decoration: none;
-    color: var(--ink);
-    transition: border-color .25s, background .25s;
-    cursor: pointer;
-  }
-  .map-card:hover {
-    border-color: var(--amber);
-    background: var(--warm-mid);
-  }
-  .map-card-icon {
-    flex: 0 0 auto;
-    width: 44px; height: 44px;
-    border: 1px solid var(--rule);
-    border-radius: 2px;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--amber);
-    font-size: 1.4rem;
-    background: var(--cream);
-    transition: border-color .25s;
-  }
-  .map-card:hover .map-card-icon { border-color: var(--amber); }
-  .map-card-body { flex: 1; }
-  .map-card-label {
-    font-family: 'Inconsolata', monospace;
-    font-size: .58rem; letter-spacing: .2em; text-transform: uppercase;
-    color: var(--amber); margin-bottom: .3rem;
-  }
-  .map-card-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem; font-weight: 700;
-    color: var(--ink); line-height: 1.3; margin-bottom: .25rem;
-  }
-  .map-card-desc {
-    font-size: .82rem; font-style: italic;
-    color: var(--muted); line-height: 1.5;
-  }
-  .map-card-arrow {
-    flex: 0 0 auto;
-    color: var(--amber); font-size: 1.1rem;
-    transition: transform .2s;
-  }
-  .map-card:hover .map-card-arrow { transform: translateX(4px); }
-
   /* ── END ORNAMENT ── */
   .essay-end {
     text-align: center; margin: 3rem 0 2rem;
@@ -264,7 +236,8 @@
 </header>
 
 <div class="essay-hero">
-  <img src="delimitation-map-1.png" alt="Who gains and who loses when Parliament grows to 850 seats">
+  <img src="parliament.jpg" alt="The new Parliament of India, Sansad Bhavan, New Delhi">
+  <div class="essay-hero-credit">Image: Tata Group</div>
 </div>
 
 <main class="essay-wrap">
@@ -315,15 +288,10 @@
       </div>
     </div>
 
-    <a class="map-card" href="delimitation-map-1.png" target="_blank">
-      <div class="map-card-icon">&#9788;</div>
-      <div class="map-card-body">
-        <div class="map-card-label">Map · Set 1</div>
-        <div class="map-card-title">Who gains and who loses when Parliament grows to 850 seats</div>
-        <div class="map-card-desc">Current seat distribution (543 seats) and the change in state share under the proposed delimitation based on 2011 Census population.</div>
-      </div>
-      <div class="map-card-arrow">→</div>
-    </a>
+    <figure class="map-figure">
+      <img src="delimitation-map-1.png" alt="Who gains and who loses when Parliament grows to 850 seats">
+      <figcaption>Current seat distribution (543 seats) and the change in each state's share under the proposed 850-seat delimitation, based on 2011 Census population. Blue = state gains; red = state loses.</figcaption>
+    </figure>
 
     <p>It is clear that the South loses representation and the so-called Hindi belt gains. Tamil Nadu loses 1.3 percent and Kerala loses 1 percent of representation while Uttar Pradesh gains the most, proportionally.</p>
 
@@ -331,15 +299,10 @@
 
     <p>If delimitation is inevitable after the freeze expires, why the hurry? And why club it with the women's reservation bill to create a smoother passage? The following set of maps partially answers this question. The map on the left panel shows the proportion of seats won by the BJP in the 2024 Lok Sabha elections. The saffron-colored states are where the BJP won a majority of the seats. Of course, the Hindi belt contributed the most to the BJP's electoral success, although Uttar Pradesh was a disappointment. Keeping the seat-proportions won across states and UTs fixed, the map on the right panel shows the additional seats that the BJP could win if the currently proposed delimitation were to happen, based on the 2011 census. While the party won 44.2% of the seats in 2024, a Hindi-belt biased delimitation, and similar electoral performance would bring the seat share to 45.3%.</p>
 
-    <a class="map-card" href="delimitation-map-2.png" target="_blank">
-      <div class="map-card-icon">&#9788;</div>
-      <div class="map-card-body">
-        <div class="map-card-label">Map · Set 2</div>
-        <div class="map-card-title">BJP is the structural beneficiary of a population-weighted delimitation</div>
-        <div class="map-card-desc">2024 Lok Sabha results by state, and the additional seats BJP could gain applying current win rates to the proposed 850-seat allocation. 240/543 (44.2%) → 385/850 (45.3%).</div>
-      </div>
-      <div class="map-card-arrow">→</div>
-    </a>
+    <figure class="map-figure">
+      <img src="delimitation-map-2.png" alt="BJP is the structural beneficiary of a population-weighted delimitation">
+      <figcaption>2024 Lok Sabha results by state, and the additional seats BJP could gain by applying current state-wise win rates to the proposed 850-seat allocation. 240/543 (44.2%) → 385/850 (45.3%).</figcaption>
+    </figure>
 
     <p>As I mentioned, this is only a partial answer because electoral gain would be marginal. Of course, the chances of electoral loss for the incumbent are non-existent if the delimitation bill had passed the Lok Sabha successfully. It would be a fool-proof answer if Uttar Pradesh is expected to flip in 2029 in favor of the BJP, and is part of the ruling party's calculations.</p>
 
